@@ -4,6 +4,6 @@ FROM gradle:7.5.1-jdk17
 #
 #COPY ./app .
 
-RUN gradle installDist
+RUN make install
 
 CMD ./build/install/app/bin/app
