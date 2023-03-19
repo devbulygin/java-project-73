@@ -4,6 +4,6 @@ WORKDIR /app
 
 COPY ./ .
 
-RUN make start
+RUN gradle run
 
 CMD build/install/app/bin/app
