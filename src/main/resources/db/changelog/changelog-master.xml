@@ -6,7 +6,7 @@
         xmlns:pro="http://www.liquibase.org/xml/ns/pro"
         xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
   http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.1.xsd http://www.liquibase.org/xml/ns/pro http://www.liquibase.org/xml/ns/pro/liquibase-pro-4.1.xsd">
-    <!-- BEGIN -->
+
     <changeSet id="1" author="devbulygin">
         <!-- Создаём таблицу -->
         <!-- Указываем имя таблицы -->
@@ -26,5 +26,25 @@
             <column name="created_at" type="TIMESTAMP"/>
         </createTable>
     </changeSet>
-    <!-- END -->
+
+    <changeSet id="2" author="devbulygin">
+
+        <addNotNullConstraint columnDataType="varchar(250)"
+                              columnName="first_name"
+                              tableName="users"
+                              validate="true"/>
+        <addNotNullConstraint columnDataType="varchar(250)"
+                              columnName="last_name"
+                              tableName="users"
+                              validate="true"/>
+        <addNotNullConstraint columnDataType="varchar(250)"
+                              columnName="email"
+                              tableName="users"
+                              validate="true"/>
+        <addNotNullConstraint columnDataType="varchar(250)"
+                              columnName="password"
+                              tableName="users"
+                              validate="true"/>
+    </changeSet>
+
 </databaseChangeLog>
