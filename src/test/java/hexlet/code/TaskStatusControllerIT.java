@@ -2,10 +2,8 @@ package hexlet.code;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import hexlet.code.Dto.TaskStatusDto;
-import hexlet.code.Dto.UserDto;
 import hexlet.code.config.SpringConfigForIT;
 import hexlet.code.model.TaskStatus;
-import hexlet.code.model.User;
 import hexlet.code.repository.TaskStatusRepository;
 import hexlet.code.utils.TestUtils;
 import org.junit.jupiter.api.AfterEach;

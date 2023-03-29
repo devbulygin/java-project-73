@@ -26,9 +26,9 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 
 @Component
 public class TestUtils {
-    private String userPath = "/api"+ USER_CONTROLLER_PATH;
+    private String userPath = "/api" + USER_CONTROLLER_PATH;
 
-    private String taskStatusPath = "/api"+ TASK_STATUS_CONTROLLER_PATH;
+    private String taskStatusPath = "/api" + TASK_STATUS_CONTROLLER_PATH;
 
     public static final String TEST_USERNAME = "email@email.com";
     public static final String TEST_USERNAME_2 = "email2@email.com";

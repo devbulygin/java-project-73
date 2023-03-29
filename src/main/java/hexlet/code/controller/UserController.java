@@ -57,7 +57,7 @@ public class UserController {
     @ApiResponse(responseCode = "201", description = "User created")
     @PostMapping
     @ResponseStatus(CREATED)
-    public User registerNewUser(@RequestBody @Valid final UserDto dto){
+    public User registerNewUser(@RequestBody @Valid final UserDto dto) {
         return userService.createNewUser(dto);
     }
 

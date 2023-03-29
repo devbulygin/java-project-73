@@ -55,16 +55,16 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
         } catch (IOException e) {
             throw new BadCredentialsException("Can't extract login data from request");
         }
-   }
+    }
 
-   @Override
-   protected void successfulAuthentication(final HttpServletRequest request,
-                                           final HttpServletResponse response,
-                                           final FilterChain chain,
-                                           final Authentication authResult) throws IOException {
-       final UserDetails user = (UserDetails) authResult.getPrincipal();
-       final String token = jwtHelper.expiring(Map.of(SPRING_SECURITY_FORM_USERNAME_KEY, user.getUsername()));
+    @Override
+    protected void successfulAuthentication(final HttpServletRequest request,
+                                            final HttpServletResponse response,
+                                            final FilterChain chain,
+                                            final Authentication authResult) throws IOException {
+        final UserDetails user = (UserDetails) authResult.getPrincipal();
+        final String token = jwtHelper.expiring(Map.of(SPRING_SECURITY_FORM_USERNAME_KEY, user.getUsername()));
 
-       response.getWriter().println(token);
-   }
+        response.getWriter().println(token);
+    }
 }

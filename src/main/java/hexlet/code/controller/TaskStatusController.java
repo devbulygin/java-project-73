@@ -51,9 +51,10 @@ public class TaskStatusController {
     }
 
     @Operation(summary = "Get all Task Status")
-    @ApiResponses(@ApiResponse(responseCode = "200", content = @Content(schema = @Schema(implementation = TaskStatus.class))))
+    @ApiResponses(@ApiResponse(responseCode = "200", content = @Content(
+            schema = @Schema(implementation = TaskStatus.class))))
     @GetMapping
-    public List<TaskStatus> getAll(){
+    public List<TaskStatus> getAll() {
         return taskStatusRepository.findAll()
                 .stream()
                 .toList();
