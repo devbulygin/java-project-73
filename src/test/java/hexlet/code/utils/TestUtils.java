@@ -3,11 +3,12 @@ package hexlet.code.utils;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import hexlet.code.Dto.TaskStatusDto;
 import hexlet.code.Dto.UserDto;
 import hexlet.code.model.User;
+import hexlet.code.repository.TaskStatusRepository;
 import hexlet.code.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
@@ -17,6 +18,7 @@ import hexlet.code.component.JWTHelper;
 
 import java.util.Map;
 
+import static hexlet.code.controller.TaskStatusController.TASK_STATUS_CONTROLLER_PATH;
 import static hexlet.code.controller.UserController.USER_CONTROLLER_PATH;
 import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
@@ -24,24 +26,36 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 
 @Component
 public class TestUtils {
-    private String fullPath = "/api"+ USER_CONTROLLER_PATH;
+    private String userPath = "/api"+ USER_CONTROLLER_PATH;
+
+    private String taskStatusPath = "/api"+ TASK_STATUS_CONTROLLER_PATH;
 
     public static final String TEST_USERNAME = "email@email.com";
     public static final String TEST_USERNAME_2 = "email2@email.com";
 
-    private final UserDto testRegistrationDto = new UserDto(
+    public static final String TEST_TASK_STATUS = "new task";
+    public static final String TEST_TASK_STATUS_2 = "in work";
+
+
+    private final UserDto testRegistrationUserDto = new UserDto(
             TEST_USERNAME,
             "fname",
             "lname",
             "pwd"
     );
 
+    private final TaskStatusDto testRegistrationTaskStatusDto = new TaskStatusDto(
+            TEST_TASK_STATUS);
+
     public UserDto getTestRegistrationDto() {
-        return testRegistrationDto;
+        return testRegistrationUserDto;
     }
 
     @Autowired
     private MockMvc mockMvc;
+
+    @Autowired
+    private TaskStatusRepository taskStatusRepository;
 
     @Autowired
     private UserRepository userRepository;
@@ -54,13 +68,28 @@ public class TestUtils {
     }
 
     public ResultActions regDefaultUser() throws Exception {
-        return regUser(testRegistrationDto);
+        return regUser(testRegistrationUserDto);
+    }
+//
+    public ResultActions regDefaultTaskStatus() throws Exception {
+        return regTaskStatus(testRegistrationTaskStatusDto);
     }
 
+    public ResultActions regTaskStatus(final TaskStatusDto taskStatusDto) throws Exception {
+        final var request = post(taskStatusPath)
+                .content(asJson(taskStatusDto))
+                .contentType(APPLICATION_JSON);
+
+        return perform(request);
+    }
+
+
     public ResultActions regUser(final UserDto userDto) throws Exception {
-        final var request = post(fullPath)
+        final var request = post(userPath)
                 .content(asJson(userDto))
                 .contentType(APPLICATION_JSON);
+
+
 
         return perform(request);
     }
@@ -86,7 +115,7 @@ public class TestUtils {
     }
 
     public void tearDown() {
-//        postCommentRepository.deleteAll();
+        taskStatusRepository.deleteAll();
 //        postRepository.deleteAll();
         userRepository.deleteAll();
     }
