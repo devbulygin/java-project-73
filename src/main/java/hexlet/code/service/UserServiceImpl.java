@@ -21,14 +21,8 @@ import org.springframework.transaction.annotation.Transactional;
 @AllArgsConstructor
 
 public class UserServiceImpl implements UserService {
-//        , UserDetailsService
-//{
     private final UserRepository userRepository;
-//    @Bean
-//    private PasswordEncoder passwordEncoder() {
-//        PasswordEncoder encoder = new BCryptPasswordEncoder();
-//        return encoder;
-//    }
+
 
     private final PasswordEncoder passwordEncoder;
     @Override

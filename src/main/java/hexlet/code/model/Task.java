@@ -8,21 +8,21 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-
-import javax.persistence.OneToMany;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.util.Date;
-import java.util.List;
 
 import static javax.persistence.TemporalType.TIMESTAMP;
+
 @Entity
-@Table(name = "task_statuses")
+@Table(name = "tasks")
 @Getter
 @Setter
-public class TaskStatus {
+public class Task {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -32,9 +32,21 @@ public class TaskStatus {
     @Size(min = 1)
     private String name;
 
-    @OneToMany(mappedBy = "tasks")
-    private List<Task> books;
+    private String description;
+    @NotNull
+    @ManyToOne
+    @JoinColumn(name = "task_status_id")
+    private TaskStatus taskStatus;
 
+    @NotNull
+    @ManyToOne
+    @JoinColumn(name = "author_id")
+    private User author;
+
+    @NotNull
+    @ManyToOne
+    @JoinColumn(name = "executor_id")
+    private User executor;
 
 
     @CreationTimestamp
