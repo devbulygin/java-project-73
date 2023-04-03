@@ -14,7 +14,6 @@ spring:
     driverClassName: org.h2.Driver
   jpa:
     spring.jpa.database-platform: org.hibernate.dialect.H2Dialect
-    show-sql: true
 
 
   # Настраиваем консоль Н2
@@ -24,8 +23,8 @@ spring:
       enabled: true
       # Указываем путь, по которому будет открываться консоль
       path: /h2console/
-      settings:
-        web-allow-others: true
+      settings.trace: false
+      settings.web-allow-others: false
 
 logging:
   level:

@@ -53,10 +53,10 @@ public class User {
     private String password;
 
     @OneToMany(mappedBy = "author")
-    private List<Task> tasks_author;
+    private List<Task> tasksAuthor;
 
     @OneToMany(mappedBy = "executor")
-    private List<Task> tasks_executor;
+    private List<Task> tasksExecutor;
 
     @CreationTimestamp
     @Temporal(TIMESTAMP)

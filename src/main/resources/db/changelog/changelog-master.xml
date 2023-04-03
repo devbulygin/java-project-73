@@ -19,7 +19,9 @@
                 <constraints primaryKey="true"/>
             </column>
             <!-- Создаём остальные столбцы -->
-            <column  name="first_name"  type="varchar(250)"/>
+            <column  name="first_name"  type="varchar(250)">
+
+            </column>
             <column  name="last_name"  type="varchar(250)"/>
             <column  name="email"  type="varchar(250)"/>
             <column  name="password"  type="varchar(250)"/>
@@ -27,69 +29,69 @@
         </createTable>
     </changeSet>
 
-    <changeSet id="2" author="devbulygin">
+<!--    <changeSet id="2" author="devbulygin">-->
 
-        <addNotNullConstraint columnDataType="varchar(250)"
-                              columnName="first_name"
-                              tableName="users"
-                              validate="true"/>
-        <addNotNullConstraint columnDataType="varchar(250)"
-                              columnName="last_name"
-                              tableName="users"
-                              validate="true"/>
-        <addNotNullConstraint columnDataType="varchar(250)"
-                              columnName="email"
-                              tableName="users"
-                              validate="true"/>
-        <addNotNullConstraint columnDataType="varchar(250)"
-                              columnName="password"
-                              tableName="users"
-                              validate="true"/>
-    </changeSet>
+<!--        <addNotNullConstraint columnDataType="varchar(250)"-->
+<!--                              columnName="FIRST_NAME"-->
+<!--                              tableName="USERS"-->
+<!--                              validate="true"/>-->
+<!--        <addNotNullConstraint columnDataType="varchar(250)"-->
+<!--                              columnName="LAST_NAME"-->
+<!--                              tableName="USERS"-->
+<!--                              validate="true"/>-->
+<!--        <addNotNullConstraint columnDataType="varchar(250)"-->
+<!--                              columnName="EMAIL"-->
+<!--                              tableName="USERS"-->
+<!--                              validate="true"/>-->
+<!--        <addNotNullConstraint columnDataType="varchar(250)"-->
+<!--                              columnName="PASSWORD"-->
+<!--                              tableName="USERS"-->
+<!--                              validate="true"/>-->
+<!--    </changeSet>-->
 
     <changeSet id="3" author="devbulygin">
-        <createTable tableName="task_statuses">
-            <column name="id" type="bigint" autoIncrement="true">
+        <createTable tableName="TASK_STATUSES">
+            <column name="ID" type="bigint" autoIncrement="true">
                 <constraints primaryKey="true"/>
             </column>
 
-            <column  name="name"  type="varchar(250)">
+            <column  name="NAME"  type="varchar(250)">
                 <constraints nullable="false"/>
             </column>
 
-            <column name="created_at" type="TIMESTAMP"/>
+            <column name="CREATED_AT" type="TIMESTAMP"/>
         </createTable>
     </changeSet>
 
     <changeSet id="4" author="devbulygin">
         <!-- Создаём таблицу -->
         <!-- Указываем имя таблицы -->
-        <createTable tableName="tasks">
+        <createTable tableName="TASKS">
             <!-- Создаём столбцы таблицы -->
             <!-- Указываем имя и тип данных в столбце -->
             <!-- Указываем что значение поля генерируется автоматически -->
-            <column name="id" type="bigint" autoIncrement="true">
+            <column name="ID" type="bigint" autoIncrement="true">
                 <!-- Указываем, что значение является первичным ключом -->
                 <constraints primaryKey="true"/>
             </column>
             <!-- Создаём остальные столбцы -->
-            <column  name="name"  type="varchar(250)">
+            <column  name="NAME"  type="varchar(250)">
                 <constraints nullable="false"/>
             </column>
-            <column name="description" type="VARCHAR(255)"/>
-            <column name="task_status_id" type="BIGINT">
+            <column name="DESCRIPTION" type="VARCHAR(255)"/>
+            <column name="TASK_STATUS_ID" type="BIGINT">
                 <constraints nullable="false"
                              foreignKeyName="tasks_task_status_id_task_status_id" references="task_statuses(id)"/>
             </column>
-            <column name="author_id" type="BIGINT">
+            <column name="AUTHOR_ID" type="BIGINT">
                 <constraints nullable="false"
                              foreignKeyName="tasks_author_id_users_id" references="users(id)"/>
             </column>
-            <column name="executor_id" type="BIGINT">
+            <column name="EXECUTOR_ID" type="BIGINT">
                 <constraints
                         foreignKeyName="tasks_executor_id_users_id" references="users(id)"/>
             </column>
-            <column name="created_at" type="TIMESTAMP"/>
+            <column name="CREATED_AT" type="TIMESTAMP"/>
         </createTable>
     </changeSet>
 

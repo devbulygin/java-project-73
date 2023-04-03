@@ -2,11 +2,11 @@ package hexlet.code.controller;
 
 import hexlet.code.Dto.TaskDto;
 import hexlet.code.model.Task;
-import hexlet.code.model.TaskStatus;
+
 import hexlet.code.repository.TaskRepository;
-import hexlet.code.repository.TaskStatusRepository;
+
 import hexlet.code.service.TaskService;
-import hexlet.code.service.TaskStatusService;
+
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
