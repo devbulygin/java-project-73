@@ -10,6 +10,7 @@ import lombok.AllArgsConstructor;
 //import org.springframework.security.core.userdetails.UserDetailsService;
 //import org.springframework.security.core.userdetails.UsernameNotFoundException;
 //import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -48,18 +49,18 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public String getCurrentUserName() {
-        return null;
+        return SecurityContextHolder.getContext().getAuthentication().getName();
     }
 
 
-//    @Override
-//    public String getCurrentUserName() {
-//        return SecurityContextHolder.getContext().getAuthentication().getName();
-//    }
 
     @Override
     public User getCurrentUser() {
         return userRepository.findByEmail(getCurrentUserName()).get();
+    }
+
+    public User getUserById(Long id) {
+        return userRepository.findById(id).get();
     }
 //
 //    @Override

@@ -1,6 +1,9 @@
 package hexlet.code.model;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
 
@@ -22,6 +25,9 @@ import static javax.persistence.TemporalType.TIMESTAMP;
 @Table(name = "tasks")
 @Getter
 @Setter
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
 public class Task {
 
     @Id

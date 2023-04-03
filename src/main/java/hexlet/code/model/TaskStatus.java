@@ -32,8 +32,8 @@ public class TaskStatus {
     @Size(min = 1)
     private String name;
 
-    @OneToMany(mappedBy = "tasks")
-    private List<Task> books;
+    @OneToMany(mappedBy = "taskStatus")
+    private List<Task> tasks;
 
 
 
