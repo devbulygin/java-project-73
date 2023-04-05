@@ -1,7 +1,9 @@
 package hexlet.code.controller;
 
 import hexlet.code.Dto.UserDto;
+import hexlet.code.model.Task;
 import hexlet.code.model.User;
+import hexlet.code.repository.TaskRepository;
 import hexlet.code.repository.UserRepository;
 import hexlet.code.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -22,6 +24,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
 import java.util.List;
+import java.util.Optional;
 
 import static hexlet.code.controller.UserController.USER_CONTROLLER_PATH;
 import static org.springframework.http.HttpStatus.CREATED;
@@ -36,11 +39,13 @@ public class UserController {
     private final UserService userService;
     private final UserRepository userRepository;
 
+    private final TaskRepository taskRepository;
+
 
     @Operation(summary = "Get user by id")
     @ApiResponses(@ApiResponse(responseCode = "200"))
     @GetMapping(ID)
-    public User getUserbyId(@PathVariable long id) {
+    public User getUserById(@PathVariable long id) {
         return userRepository.getById(id);
     }
 
@@ -71,7 +76,27 @@ public class UserController {
     @Operation(summary = "delete user")
     @DeleteMapping(ID)
     public void deleteUser(@PathVariable long id) {
+
+        Optional<User> optionalUser = userRepository.findById(id);
+
+        if (!optionalUser.isPresent()) {
+            throw new RuntimeException("User not found");
+        }
+
+        User user = optionalUser.get();
+
+        List<Task> tasksAuthor = user.getTasksAuthor();
+        List<Task> tasksExecutor = user.getTasksExecutor();
+        if (!tasksAuthor.isEmpty()) {
+            throw new RuntimeException("User is task author, cannot delete");
+        }
+
+        if (!tasksExecutor.isEmpty()) {
+            throw new RuntimeException("User has task, cannot delete");
+        }
+
         userRepository.deleteById(id);
+
     }
 
 }

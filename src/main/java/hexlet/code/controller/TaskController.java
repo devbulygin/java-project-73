@@ -13,6 +13,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import lombok.AllArgsConstructor;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -40,6 +41,10 @@ public class TaskController {
     private final TaskRepository taskRepository;
 
     private final TaskService taskService;
+
+    private static final String ONLY_OWNER_BY_ID = """
+            @userRepository.findById(#id).get().getEmail() == authentication.getName()
+        """;
 
     @Operation(summary = "Get task by id")
     @ApiResponses(@ApiResponse(responseCode = "200"))
@@ -74,6 +79,7 @@ public class TaskController {
 
     @Operation(summary = "delete task")
     @DeleteMapping(ID)
+    @PreAuthorize(ONLY_OWNER_BY_ID)
     public void deleteTaskStatus(@PathVariable long id) {
         taskRepository.deleteById(id);
     }

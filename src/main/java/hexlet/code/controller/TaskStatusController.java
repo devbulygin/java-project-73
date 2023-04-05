@@ -2,7 +2,9 @@ package hexlet.code.controller;
 
 
 import hexlet.code.Dto.TaskStatusDto;
+import hexlet.code.model.Task;
 import hexlet.code.model.TaskStatus;
+import hexlet.code.repository.TaskRepository;
 import hexlet.code.repository.TaskStatusRepository;
 import hexlet.code.repository.UserRepository;
 import hexlet.code.service.TaskStatusService;
@@ -42,6 +44,8 @@ public class TaskStatusController {
     private final TaskStatusService taskStatusService;
     private final UserRepository userRepository;
 
+    private final TaskRepository taskRepository;
+
 
     @Operation(summary = "get Task Status by id")
     @ApiResponses(@ApiResponse(responseCode = "200"))
@@ -77,6 +81,13 @@ public class TaskStatusController {
     @Operation(summary = "delete task status")
     @DeleteMapping(ID)
     public void deleteTaskStatus(@PathVariable long id) {
+        TaskStatus taskStatus = taskStatusRepository.getById(id);
+
+        List<Task> tasks = taskStatus.getTasks();
+        if (!tasks.isEmpty()) {
+            throw new RuntimeException("Task status is connected to task, cannot delete");
+        }
+
         taskStatusRepository.deleteById(id);
     }
 

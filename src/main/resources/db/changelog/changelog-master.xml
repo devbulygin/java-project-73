@@ -94,5 +94,30 @@
             <column name="CREATED_AT" type="TIMESTAMP"/>
         </createTable>
     </changeSet>
+    <changeSet id="5" author="devbulygin">
+        <!-- Создаём таблицу -->
+        <!-- Указываем имя таблицы -->
+        <createTable tableName="LABELS">
+            <!-- Создаём столбцы таблицы -->
+            <!-- Указываем имя и тип данных в столбце -->
+            <!-- Указываем что значение поля генерируется автоматически -->
+            <column name="ID" type="bigint" autoIncrement="true">
+                <!-- Указываем, что значение является первичным ключом -->
+                <constraints primaryKey="true"/>
+            </column>
+            <!-- Создаём остальные столбцы -->
+            <column  name="NAME"  type="varchar(250)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="CREATED_AT" type="TIMESTAMP"/>
+            <column name="DESCRIPTION" type="VARCHAR(255)"/>
+            <column name="TASKS_ID" type="BIGINT">
+                <constraints nullable="false"
+                             foreignKeyName="Labels_tasks_id_tasks_id_labels_id" references="tasks(id)"/>
+            </column>
+
+
+        </createTable>
+    </changeSet>
 
 </databaseChangeLog>

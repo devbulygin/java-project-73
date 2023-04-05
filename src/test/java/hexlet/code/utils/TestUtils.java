@@ -3,9 +3,11 @@ package hexlet.code.utils;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+
 import hexlet.code.Dto.TaskStatusDto;
 import hexlet.code.Dto.UserDto;
 import hexlet.code.model.User;
+import hexlet.code.repository.TaskRepository;
 import hexlet.code.repository.TaskStatusRepository;
 import hexlet.code.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,6 +38,10 @@ public class TestUtils {
     public static final String TEST_TASK_STATUS = "new task";
     public static final String TEST_TASK_STATUS_2 = "in work";
 
+    public static final String TEST_TASK_NAME = "fix checkstyle error";
+    public static final String TEST_TASK = "in work";
+
+
 
     private final UserDto testRegistrationUserDto = new UserDto(
             TEST_USERNAME,
@@ -46,6 +52,12 @@ public class TestUtils {
 
     private final TaskStatusDto testRegistrationTaskStatusDto = new TaskStatusDto(
             TEST_TASK_STATUS);
+
+//    private final TaskDto testRegistrationTaskDto = new TaskDto(
+//            TEST_TASK_NAME,
+//
+//
+//    );
 
     public UserDto getTestRegistrationDto() {
         return testRegistrationUserDto;
@@ -70,10 +82,14 @@ public class TestUtils {
     public ResultActions regDefaultUser() throws Exception {
         return regUser(testRegistrationUserDto);
     }
-//
+
     public ResultActions regDefaultTaskStatus() throws Exception {
         return regTaskStatus(testRegistrationTaskStatusDto);
     }
+
+//    public ResultActions regDefaultTask() throws Exception {
+//        return regTask(testRegistrationTaskDto);
+//    }
 
     public ResultActions regTaskStatus(final TaskStatusDto taskStatusDto) throws Exception {
         final var request = post(taskStatusPath)
@@ -106,6 +122,9 @@ public class TestUtils {
     }
 
     private static final ObjectMapper MAPPER = new ObjectMapper().findAndRegisterModules();
+    @Autowired
+    private TaskRepository taskRepository;
+
     public static String asJson(final Object object) throws JsonProcessingException {
         return MAPPER.writeValueAsString(object);
     }
@@ -118,5 +137,6 @@ public class TestUtils {
         taskStatusRepository.deleteAll();
 //        postRepository.deleteAll();
         userRepository.deleteAll();
+        taskRepository.deleteAll();
     }
 }
