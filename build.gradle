@@ -64,10 +64,6 @@ dependencies {
             'org.springdoc:springdoc-openapi-ui:1.5.12',
 
 
-
-
-
-
     )
 
 
@@ -80,6 +76,11 @@ dependencies {
 
 
 }
+
+//openApi {
+//    apiDocsUrl.set("http://localhost:8080/api-docs")
+//}
+
 
 
 diffChangeLog {

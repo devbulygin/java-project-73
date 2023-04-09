@@ -7,3 +7,6 @@
 
 
 web-production-faa1.up.railway.app
+
+API DOC 
+https://web-production-faa1.up.railway.app/swagger.html
