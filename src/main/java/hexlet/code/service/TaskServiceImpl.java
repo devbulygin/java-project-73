@@ -7,17 +7,10 @@ import hexlet.code.model.User;
 import hexlet.code.repository.TaskRepository;
 import hexlet.code.repository.TaskStatusRepository;
 import lombok.AllArgsConstructor;
-import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
 import javax.persistence.EntityManager;
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Predicate;
-import javax.persistence.criteria.Root;
-import java.util.ArrayList;
-import java.util.List;
+
 
 @Service
 @Transactional
@@ -44,36 +37,6 @@ public class TaskServiceImpl implements TaskService {
         return taskRepository.save(task);
     }
 
-
-    @Override
-    public List<Task> findByParams(Long taskStatusId, Long executorId, Long labelId, boolean myTaskOnly) {
-        CriteriaBuilder criteriaBuilder = this.entityManager.getCriteriaBuilder();
-        CriteriaQuery<Task> criteriaQuery = criteriaBuilder.createQuery(Task.class);
-        Root<Task> taskRoot = criteriaQuery.from(Task.class);
-
-        List<Predicate> predicates = new ArrayList<>();
-
-        if (taskStatusId != null) {
-            predicates.add(criteriaBuilder.equal(taskRoot.get("taskStatusId"), taskStatusId));
-        }
-
-        if (executorId != null) {
-            predicates.add(criteriaBuilder.equal(taskRoot.get("executorId"), executorId));
-        }
-
-        if (labelId != null) {
-            predicates.add(criteriaBuilder.equal(taskRoot.get("labelId"), labelId));
-        }
-
-        if (myTaskOnly == true) {
-            Authentication authentication = null;
-            User currentUser = (User) authentication.getPrincipal();
-            predicates.add(criteriaBuilder.equal(taskRoot.get("authorId"), currentUser.getId()));
-        }
-
-        criteriaQuery.where(predicates.toArray(new Predicate[0]));
-        return entityManager.createQuery(criteriaQuery).getResultList();
-    }
 
     private void merge(final Task task, final TaskDto taskDto) {
         final Task newTask = fromDto(taskDto);

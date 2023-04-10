@@ -11,6 +11,7 @@ plugins {
     id 'com.github.johnrengelman.processes' version '0.5.0'
     id 'org.siouan.frontend-jdk11' version '6.0.0'
 
+
 }
 
 java {
@@ -62,6 +63,9 @@ dependencies {
             'com.h2database:h2',
             group: 'org.postgresql', name: 'postgresql', version: '42.2.24',
             'org.springdoc:springdoc-openapi-ui:1.5.12',
+            'com.rollbar:rollbar-spring-boot-webmvc:1.10.0',
+            'com.querydsl:querydsl-core:5.0.0',
+            'com.querydsl:querydsl-jpa:5.0.0'
 
 
     )
