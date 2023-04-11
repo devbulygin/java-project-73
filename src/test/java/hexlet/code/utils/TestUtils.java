@@ -7,6 +7,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import hexlet.code.Dto.TaskStatusDto;
 import hexlet.code.Dto.UserDto;
 import hexlet.code.model.User;
+import hexlet.code.repository.LabelRepository;
 import hexlet.code.repository.TaskRepository;
 import hexlet.code.repository.TaskStatusRepository;
 import hexlet.code.repository.UserRepository;
@@ -32,8 +33,8 @@ public class TestUtils {
 
     private String taskStatusPath = "/api" + TASK_STATUS_CONTROLLER_PATH;
 
-    public static final String TEST_USERNAME = "email@email.com";
-    public static final String TEST_USERNAME_2 = "email2@email.com";
+    public static final String TEST_EMAIL = "email@email.com";
+    public static final String TEST_EMAIL_2 = "email2@email.com";
 
     public static final String TEST_TASK_STATUS = "new task";
     public static final String TEST_TASK_STATUS_2 = "in work";
@@ -44,7 +45,7 @@ public class TestUtils {
 
 
     private final UserDto testRegistrationUserDto = new UserDto(
-            TEST_USERNAME,
+            TEST_EMAIL,
             "fname",
             "lname",
             "pwd"
@@ -53,11 +54,6 @@ public class TestUtils {
     private final TaskStatusDto testRegistrationTaskStatusDto = new TaskStatusDto(
             TEST_TASK_STATUS);
 
-//    private final TaskDto testRegistrationTaskDto = new TaskDto(
-//            TEST_TASK_NAME,
-//
-//
-//    );
 
     public UserDto getTestRegistrationDto() {
         return testRegistrationUserDto;
@@ -110,8 +106,8 @@ public class TestUtils {
         return perform(request);
     }
 
-    public ResultActions perform(final MockHttpServletRequestBuilder request, final String byUser) throws Exception {
-        final String token = jwtHelper.expiring(Map.of("username", byUser));
+    public ResultActions perform(final MockHttpServletRequestBuilder request, final String byEmail) throws Exception {
+        final String token = jwtHelper.expiring(Map.of("email", byEmail));
         request.header(AUTHORIZATION, token);
 
         return perform(request);
@@ -124,6 +120,8 @@ public class TestUtils {
     private static final ObjectMapper MAPPER = new ObjectMapper().findAndRegisterModules();
     @Autowired
     private TaskRepository taskRepository;
+    @Autowired
+    private LabelRepository labelRepository;
 
     public static String asJson(final Object object) throws JsonProcessingException {
         return MAPPER.writeValueAsString(object);
@@ -135,7 +133,7 @@ public class TestUtils {
 
     public void tearDown() {
         taskStatusRepository.deleteAll();
-//        postRepository.deleteAll();
+        labelRepository.deleteAll();
         userRepository.deleteAll();
         taskRepository.deleteAll();
     }

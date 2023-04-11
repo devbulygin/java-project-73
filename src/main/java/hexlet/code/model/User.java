@@ -23,6 +23,7 @@ import java.util.Date;
 import java.util.List;
 
 import org.hibernate.annotations.CreationTimestamp;
+import org.springframework.security.core.userdetails.UserDetailsService;
 
 import static javax.persistence.TemporalType.TIMESTAMP;
 
@@ -70,4 +71,6 @@ public class User {
     private Date createdAt;
 
 
+    public void userDetailsService(UserDetailsService userDetailsService) {
+    }
 }

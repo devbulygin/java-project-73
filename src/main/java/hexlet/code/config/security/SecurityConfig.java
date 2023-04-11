@@ -3,7 +3,13 @@ package hexlet.code.config.security;
 import hexlet.code.component.JWTHelper;
 import hexlet.code.filter.JWTAuthorizationFilter;
 import hexlet.code.filter.JWTAuthenticationFilter;
+
+import hexlet.code.service.UserDetailsServiceImpl;
+import org.springframework.context.annotation.Bean;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
@@ -21,10 +27,12 @@ import org.springframework.security.web.util.matcher.NegatedRequestMatcher;
 import org.springframework.security.web.util.matcher.OrRequestMatcher;
 import org.springframework.security.web.util.matcher.RequestMatcher;
 
+import javax.servlet.Filter;
 import java.util.List;
 
 
 import static hexlet.code.controller.UserController.USER_CONTROLLER_PATH;
+import static java.lang.String.format;
 import static org.springframework.http.HttpMethod.GET;
 import static org.springframework.http.HttpMethod.POST;
 
@@ -32,26 +40,32 @@ import static org.springframework.http.HttpMethod.POST;
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
+
     public static final String LOGIN = "/login";
+
     public static final List<GrantedAuthority> DEFAULT_AUTHORITIES = List.of(new SimpleGrantedAuthority("USER"));
+
+    //Note: Сейчас разрешены:
+    // - GET('/api/users')
+    // - POST('/api/users')
+    // - POST('/api/login')
+    // - все запросы НЕ начинающиеся на '/api'
     private final RequestMatcher publicUrls;
     private final RequestMatcher loginRequest;
-    private final UserDetailsService userDetailsService;
+    private UserDetailsServiceImpl userDetailsService;
     private final PasswordEncoder passwordEncoder;
     private final JWTHelper jwtHelper;
 
     public SecurityConfig(@Value("${base-url}") final String baseUrl,
-                          final UserDetailsService userDetailsService,
+                          final UserDetailsServiceImpl userDetailsService,
                           final PasswordEncoder passwordEncoder, final JWTHelper jwtHelper) {
         this.loginRequest = new AntPathRequestMatcher(baseUrl + LOGIN, POST.toString());
-
         this.publicUrls = new OrRequestMatcher(
                 loginRequest,
                 new AntPathRequestMatcher(baseUrl + USER_CONTROLLER_PATH, POST.toString()),
                 new AntPathRequestMatcher(baseUrl + USER_CONTROLLER_PATH, GET.toString()),
                 new NegatedRequestMatcher(new AntPathRequestMatcher(baseUrl + "/**"))
         );
-
         this.userDetailsService = userDetailsService;
         this.passwordEncoder = passwordEncoder;
         this.jwtHelper = jwtHelper;
@@ -63,13 +77,14 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .passwordEncoder(passwordEncoder);
     }
 
-
     @Override
     public void configure(final HttpSecurity http) throws Exception {
+
         final var authenticationFilter = new JWTAuthenticationFilter(
                 authenticationManagerBean(),
                 loginRequest,
-                jwtHelper);
+                jwtHelper
+        );
 
         final var authorizationFilter = new JWTAuthorizationFilter(
                 publicUrls,
@@ -86,7 +101,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .sessionManagement().disable()
                 .formLogin().disable()
                 .httpBasic().disable()
-                .logout().disable()
-                .headers().frameOptions().disable();
+                .logout().disable();
+
+        http.headers().frameOptions().disable();
     }
+
 }
+
+
+
