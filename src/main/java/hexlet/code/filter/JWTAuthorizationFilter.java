@@ -18,12 +18,14 @@ import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 import static org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter.SPRING_SECURITY_FORM_USERNAME_KEY;
 
 public class JWTAuthorizationFilter extends OncePerRequestFilter {
+
     private static final String BEARER = "Bearer";
 
     private final RequestMatcher publicUrls;
     private final JWTHelper jwtHelper;
 
-    public JWTAuthorizationFilter(RequestMatcher publicUrls, JWTHelper jwtHelper) {
+    public JWTAuthorizationFilter(final RequestMatcher publicUrls,
+                                  final JWTHelper jwtHelper) {
         this.publicUrls = publicUrls;
         this.jwtHelper = jwtHelper;
     }
@@ -49,6 +51,7 @@ public class JWTAuthorizationFilter extends OncePerRequestFilter {
 
         SecurityContextHolder.getContext().setAuthentication(authToken);
         filterChain.doFilter(request, response);
+
     }
 
     private UsernamePasswordAuthenticationToken buildAuthToken(final String username) {
@@ -59,4 +62,3 @@ public class JWTAuthorizationFilter extends OncePerRequestFilter {
         );
     }
 }
-

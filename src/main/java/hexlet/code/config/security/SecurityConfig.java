@@ -1,20 +1,12 @@
 package hexlet.code.config.security;
 
 import hexlet.code.component.JWTHelper;
-import hexlet.code.filter.JWTAuthorizationFilter;
 import hexlet.code.filter.JWTAuthenticationFilter;
-
-import hexlet.code.service.UserDetailsServiceImpl;
-import org.springframework.context.annotation.Bean;
-import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import hexlet.code.filter.JWTAuthorizationFilter;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
-
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
@@ -22,17 +14,15 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import org.springframework.security.web.util.matcher.NegatedRequestMatcher;
 import org.springframework.security.web.util.matcher.OrRequestMatcher;
 import org.springframework.security.web.util.matcher.RequestMatcher;
 
-import javax.servlet.Filter;
 import java.util.List;
 
-
 import static hexlet.code.controller.UserController.USER_CONTROLLER_PATH;
-import static java.lang.String.format;
 import static org.springframework.http.HttpMethod.GET;
 import static org.springframework.http.HttpMethod.POST;
 
@@ -45,19 +35,14 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     public static final List<GrantedAuthority> DEFAULT_AUTHORITIES = List.of(new SimpleGrantedAuthority("USER"));
 
-    //Note: Сейчас разрешены:
-    // - GET('/api/users')
-    // - POST('/api/users')
-    // - POST('/api/login')
-    // - все запросы НЕ начинающиеся на '/api'
     private final RequestMatcher publicUrls;
     private final RequestMatcher loginRequest;
-    private UserDetailsServiceImpl userDetailsService;
+    private final UserDetailsService userDetailsService;
     private final PasswordEncoder passwordEncoder;
     private final JWTHelper jwtHelper;
 
     public SecurityConfig(@Value("${base-url}") final String baseUrl,
-                          final UserDetailsServiceImpl userDetailsService,
+                          final UserDetailsService userDetailsService,
                           final PasswordEncoder passwordEncoder, final JWTHelper jwtHelper) {
         this.loginRequest = new AntPathRequestMatcher(baseUrl + LOGIN, POST.toString());
         this.publicUrls = new OrRequestMatcher(
@@ -79,7 +64,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     public void configure(final HttpSecurity http) throws Exception {
-
         final var authenticationFilter = new JWTAuthenticationFilter(
                 authenticationManagerBean(),
                 loginRequest,
@@ -102,11 +86,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .formLogin().disable()
                 .httpBasic().disable()
                 .logout().disable();
-
-        http.headers().frameOptions().disable();
     }
-
 }
-
-
 

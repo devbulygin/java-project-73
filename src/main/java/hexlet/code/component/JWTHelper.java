@@ -7,7 +7,6 @@ import io.jsonwebtoken.impl.DefaultClock;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
-
 import java.util.Date;
 import java.util.Map;
 
@@ -33,22 +32,11 @@ public class JWTHelper {
         this.clock = DefaultClock.INSTANCE;
     }
 
-
     public String expiring(final Map<String, Object> attributes) {
         return Jwts.builder()
                 .signWith(HS256, secretKey)
                 .setClaims(getClaims(attributes, expirationSec))
                 .compact();
-    }
-
-    public Map<String, Object> verify(final String token) {
-        return Jwts.parser()
-                .requireIssuer(issuer)
-                .setClock(clock)
-                .setAllowedClockSkewSeconds(clockSkewSec)
-                .setSigningKey(secretKey)
-                .parseClaimsJws(token)
-                .getBody();
     }
 
     private Claims getClaims(final Map<String, Object> attributes, final Long expiresInSec) {
@@ -62,5 +50,14 @@ public class JWTHelper {
         return claims;
     }
 
+    public Map<String, Object> verify(final String token) {
+        return Jwts.parser()
+                .requireIssuer(issuer)
+                .setClock(clock)
+                .setAllowedClockSkewSeconds(clockSkewSec)
+                .setSigningKey(secretKey)
+                .parseClaimsJws(token)
+                .getBody();
+    }
 
 }

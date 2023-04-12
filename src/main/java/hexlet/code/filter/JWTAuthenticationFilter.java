@@ -20,7 +20,6 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilter {
-
     private static final ObjectMapper MAPPER = new ObjectMapper();
 
     private final JWTHelper jwtHelper;
@@ -32,7 +31,6 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
         super.setRequiresAuthenticationRequestMatcher(loginRequest);
         this.jwtHelper = jwtHelper;
     }
-
 
     @Override
     public Authentication attemptAuthentication(final HttpServletRequest request,
@@ -67,4 +65,9 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
 
         response.getWriter().println(token);
     }
+
+
+
+
+
 }
