@@ -26,6 +26,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
 import java.util.List;
+import java.util.Set;
 
 import static hexlet.code.controller.TaskStatusController.TASK_STATUS_CONTROLLER_PATH;
 import static org.springframework.http.HttpStatus.CREATED;
@@ -83,7 +84,7 @@ public class TaskStatusController {
     public void deleteTaskStatus(@PathVariable long id) {
         TaskStatus taskStatus = taskStatusRepository.getById(id);
 
-        List<Task> tasks = taskStatus.getTasks();
+        Set<Task> tasks = taskStatus.getTasks();
         if (tasks != null) {
             throw new RuntimeException("Task status is connected to task, cannot delete");
         }

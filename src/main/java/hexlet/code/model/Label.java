@@ -20,7 +20,7 @@ import javax.persistence.Temporal;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.util.Date;
-import java.util.List;
+import java.util.Set;
 
 import static javax.persistence.TemporalType.TIMESTAMP;
 
@@ -49,5 +49,5 @@ public class Label {
             joinColumns = @JoinColumn(name = "task_id", referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(name = "label_id",
                     referencedColumnName = "id"))
-    private List<Task> tasks;
+    private Set<Task> tasks;
 }

@@ -25,6 +25,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
 import java.util.List;
+import java.util.Set;
 
 import static hexlet.code.controller.LabelController.LABEL_CONTROLLER_PATH;
 import static org.springframework.http.HttpStatus.CREATED;
@@ -74,7 +75,7 @@ public class LabelController {
     public void deleteLabel(@PathVariable long id) {
         Label label = labelRepository.getById(id);
 
-        List<Task> tasks = label.getTasks();
+        Set<Task> tasks = label.getTasks();
 
         if (tasks != null) {
             throw new RuntimeException("label connected to task");
