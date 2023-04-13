@@ -87,11 +87,11 @@ public class UserController {
 
         List<Task> tasksAuthor = user.getTasksAuthor();
         List<Task> tasksExecutor = user.getTasksExecutor();
-        if (tasksAuthor == null) {
+        if (tasksAuthor != null) {
             throw new RuntimeException("User is task author, cannot delete");
         }
 
-        if (tasksExecutor == null) {
+        if (tasksExecutor != null) {
             throw new RuntimeException("User has task, cannot delete");
         }
 
