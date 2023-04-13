@@ -16,15 +16,18 @@ import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
 import java.util.List;
 
 import static hexlet.code.controller.LabelController.LABEL_CONTROLLER_PATH;
+import static org.springframework.http.HttpStatus.CREATED;
 
 @AllArgsConstructor
 @RestController
@@ -50,6 +53,14 @@ public class LabelController {
         return labelRepository.findAll()
                 .stream()
                 .toList();
+    }
+
+    @Operation(summary = "Create label")
+    @ApiResponse(responseCode = "201", description = "Task Status created")
+    @PostMapping
+    @ResponseStatus(CREATED)
+    public Label regNewLabel(@RequestBody @Valid LabelDto labelDto) {
+        return labelService.createNewLabel(labelDto);
     }
 
     @Operation(summary = "Update label")
