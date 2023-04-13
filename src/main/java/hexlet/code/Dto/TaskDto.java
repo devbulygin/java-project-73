@@ -20,10 +20,10 @@ public class TaskDto {
 
     private String description;
 
-    @NotNull
+
     private Long taskStatusId;
 
-    @NotNull
+ё
     private Long authorId;
 
     private Long executorId;
