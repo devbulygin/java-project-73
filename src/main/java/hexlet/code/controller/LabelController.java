@@ -76,7 +76,7 @@ public class LabelController {
 
         List<Task> tasks = label.getTasks();
 
-        if (!tasks.isEmpty()) {
+        if (tasks != null) {
             throw new RuntimeException("label connected to task");
         }
         labelRepository.deleteById(id);
