@@ -50,7 +50,7 @@ public class Task {
     @JoinColumn(name = "task_status_id")
     private TaskStatus taskStatus;
 
-    @NotNull
+
     @ManyToOne
     @ToString.Exclude
     @JoinColumn(name = "author_id")
