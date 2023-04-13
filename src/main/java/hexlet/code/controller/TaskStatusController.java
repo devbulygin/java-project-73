@@ -84,7 +84,7 @@ public class TaskStatusController {
         TaskStatus taskStatus = taskStatusRepository.getById(id);
 
         List<Task> tasks = taskStatus.getTasks();
-        if (!tasks.isEmpty()) {
+        if (tasks != null) {
             throw new RuntimeException("Task status is connected to task, cannot delete");
         }
 
