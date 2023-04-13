@@ -20,10 +20,13 @@ import javax.persistence.Temporal;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.util.Date;
-import java.util.List;
+import java.util.Set;
 
+import lombok.ToString;
 import org.hibernate.annotations.CreationTimestamp;
 
+import static javax.persistence.CascadeType.ALL;
+import static javax.persistence.FetchType.EAGER;
 import static javax.persistence.TemporalType.TIMESTAMP;
 
 @Entity
@@ -59,11 +62,12 @@ public class User {
     @JsonIgnore
     private String password;
 
-    @OneToMany(mappedBy = "author")
-    private List<Task> tasksAuthor;
+    @OneToMany(mappedBy = "author", cascade = ALL, fetch = EAGER)
+    private Set<Task> tasksAuthor;
 
-    @OneToMany(mappedBy = "executor")
-    private List<Task> tasksExecutor;
+    @OneToMany(mappedBy = "executor", cascade = ALL, fetch = EAGER)
+    @ToString.Exclude
+    private Set<Task> tasksExecutor;
 
     @CreationTimestamp
     @Temporal(TIMESTAMP)

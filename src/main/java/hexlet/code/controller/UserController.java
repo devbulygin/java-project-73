@@ -25,6 +25,7 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.validation.Valid;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 import static hexlet.code.controller.UserController.USER_CONTROLLER_PATH;
 import static org.springframework.http.HttpStatus.CREATED;
@@ -85,8 +86,8 @@ public class UserController {
 
         User user = optionalUser.get();
 
-        List<Task> tasksAuthor = user.getTasksAuthor();
-        List<Task> tasksExecutor = user.getTasksExecutor();
+        Set<Task> tasksAuthor = user.getTasksAuthor();
+        Set<Task> tasksExecutor = user.getTasksExecutor();
         if (tasksAuthor != null) {
             throw new RuntimeException("User is task author, cannot delete");
         }
