@@ -52,13 +52,13 @@ public class Task {
     private TaskStatus taskStatus;
 
 
-    @NotBlank
+    @NotNull
     @ManyToOne
     @ToString.Exclude
     @JoinColumn(name = "author_id")
     private User author;
 
-    @NotNull
+
     @ManyToOne
     @ToString.Exclude
     @JoinColumn(name = "executor_id")

@@ -62,6 +62,7 @@ public class User {
     @JsonIgnore
     private String password;
 
+
     @OneToMany(mappedBy = "author", cascade = ALL, fetch = EAGER)
     private Set<Task> tasksAuthor;
 
