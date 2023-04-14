@@ -17,6 +17,7 @@ import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.util.Date;
@@ -51,6 +52,7 @@ public class Task {
     private TaskStatus taskStatus;
 
 
+    @NotBlank
     @ManyToOne
     @ToString.Exclude
     @JoinColumn(name = "author_id")
