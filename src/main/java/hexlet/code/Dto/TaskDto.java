@@ -14,16 +14,16 @@ import java.util.Set;
 @AllArgsConstructor
 public class TaskDto {
 
-    @NotBlank
-    @Size(min = 1)
+    @NotBlank(message = "Name is mandatory")
     private String name;
 
     private String description;
 
-    @NotNull
+
+    @NotNull(message = "Task status is mandatory")
     private Long taskStatusId;
 
-    @NotNull
+    @NotNull(message = "Author is mandatory")
     private Long authorId;
 
     private Long executorId;
