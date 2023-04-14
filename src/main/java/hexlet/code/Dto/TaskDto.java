@@ -21,11 +21,9 @@ public class TaskDto {
     private String description;
 
     @NotNull
-    @Size(min = 1)
     private Long taskStatusId;
 
     @NotNull
-    @Size(min = 1)
     private Long authorId;
 
     private Long executorId;
