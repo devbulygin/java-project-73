@@ -40,11 +40,11 @@ public class LabelController {
     private final LabelService labelService;
     private final LabelRepository labelRepository;
 
-    @Operation(summary = "get label by id")
     @ApiResponses(@ApiResponse(responseCode = "200"))
+    @Operation(summary = "Get label")
     @GetMapping(ID)
-    public Label getLabelById(@PathVariable long id) {
-        return labelRepository.findById(id).get();
+    public Label getLabelById(@PathVariable final Long id) {
+        return labelRepository.getById(id);
     }
 
     @Operation(summary = "Get all labels")

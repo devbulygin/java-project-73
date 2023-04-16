@@ -43,12 +43,14 @@ public class UserController {
     private final TaskRepository taskRepository;
 
 
-    @Operation(summary = "Get user by id")
+
     @ApiResponses(@ApiResponse(responseCode = "200"))
+    @Operation(summary = "Get user")
     @GetMapping(ID)
-    public User getUserById(@PathVariable long id) {
-        return userRepository.getById(id);
+    public User getUserById(@PathVariable final Long id) {
+        return userRepository.findById(id).get();
     }
+
 
     @Operation(summary = "Get all users")
     @ApiResponses(@ApiResponse(responseCode = "200", content = @Content(schema = @Schema(implementation = User.class))))

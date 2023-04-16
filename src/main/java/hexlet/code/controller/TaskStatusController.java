@@ -48,10 +48,10 @@ public class TaskStatusController {
     private final TaskRepository taskRepository;
 
 
-    @Operation(summary = "get Task Status by id")
     @ApiResponses(@ApiResponse(responseCode = "200"))
+    @Operation(summary = "Get status")
     @GetMapping(ID)
-    public TaskStatus getTaskStatusByID(@PathVariable long id) {
+    public TaskStatus getTaskStatusById(@PathVariable Long id) {
         return taskStatusRepository.getById(id);
     }
 
