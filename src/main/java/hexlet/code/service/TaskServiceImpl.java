@@ -1,15 +1,19 @@
 package hexlet.code.service;
 
 import hexlet.code.Dto.TaskDto;
+import hexlet.code.model.Label;
 import hexlet.code.model.Task;
 import hexlet.code.model.TaskStatus;
 import hexlet.code.model.User;
+import hexlet.code.repository.LabelRepository;
 import hexlet.code.repository.TaskRepository;
 import hexlet.code.repository.TaskStatusRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import javax.persistence.EntityManager;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 
 @Service
@@ -23,6 +27,7 @@ public class TaskServiceImpl implements TaskService {
 
     TaskRepository taskRepository;
     private final TaskStatusRepository taskStatusRepository;
+    private final LabelRepository labelRepository;
 
     @Override
     public Task createNewTask(TaskDto taskDto) {
@@ -52,6 +57,9 @@ public class TaskServiceImpl implements TaskService {
         final User author = userService.getUserById(taskDto.getAuthorId());
         final User executor = userService.getUserById(taskDto.getExecutorId());
         final TaskStatus taskStatus = taskStatusRepository.getById(taskDto.getTaskStatusId());
+        final Set<Label> labels = taskDto.getLabelIds().stream()
+                .map(id -> labelRepository.getById(id))
+                .collect(Collectors.toSet());
 
         return Task.builder()
                 .name(taskDto.getName())
@@ -59,6 +67,7 @@ public class TaskServiceImpl implements TaskService {
                 .taskStatus(taskStatus)
                 .author(author)
                 .executor(executor)
+                .labels(labels)
                 .build();
     }
 }

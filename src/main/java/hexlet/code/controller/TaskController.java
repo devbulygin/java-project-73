@@ -3,6 +3,8 @@ package hexlet.code.controller;
 import com.querydsl.core.types.Predicate;
 import hexlet.code.Dto.TaskDto;
 import hexlet.code.model.Task;
+import hexlet.code.model.TaskStatus;
+import hexlet.code.model.User;
 import hexlet.code.repository.TaskRepository;
 
 import hexlet.code.service.TaskService;
@@ -29,6 +31,8 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
+
+import java.util.Optional;
 
 import static hexlet.code.controller.TaskController.TASK_CONTROLLER_PATH;
 import static org.springframework.http.HttpStatus.CREATED;
@@ -87,6 +91,24 @@ public class TaskController {
     @DeleteMapping(ID)
     @PreAuthorize(ONLY_OWNER_BY_ID)
     public void deleteTaskStatus(@PathVariable long id) {
+        Optional<Task> optionalTask = taskRepository.findById(id);
+
+        if (!optionalTask.isPresent()) {
+            throw new RuntimeException("Task not found");
+        }
+//
+//        Task task = optionalTask.get();
+//
+//        User author = task.getAuthor();
+//
+//        User executor = task.getExecutor();
+//
+//        TaskStatus taskStatus = task.getTaskStatus();
+//
+//        if (author != null) {
+//            throw new RuntimeException("")
+//        }
+
         taskRepository.deleteById(id);
     }
 
