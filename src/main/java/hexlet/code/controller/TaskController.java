@@ -85,28 +85,14 @@ public class TaskController {
         return taskService.updateTask(id, taskDto);
     }
 
-    @Operation(summary = "delete task")
-    @DeleteMapping(ID)
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Task delete"),
+            @ApiResponse(responseCode = "404", description = "Task not found")
+    })
+    @Operation(summary = "Delete task")
     @PreAuthorize(ONLY_OWNER_BY_ID)
-    public void deleteTask(@PathVariable long id) {
-        Optional<Task> optionalTask = taskRepository.findById(id);
-
-        if (optionalTask == null) {
-            throw new RuntimeException("Task not found");
-        }
-//
-//        Task task = optionalTask.get();
-//
-//        User author = task.getAuthor();
-//
-//        User executor = task.getExecutor();
-//
-//        TaskStatus taskStatus = task.getTaskStatus();
-//
-//        if (author != null) {
-//            throw new RuntimeException("")
-//        }
-
+    @DeleteMapping(ID)
+    public void deleteTaskById(@PathVariable final Long id) {
         taskRepository.deleteById(id);
     }
 
