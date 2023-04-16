@@ -1,25 +1,14 @@
 package hexlet.code.service;
 
-import hexlet.code.Dto.TaskDto;
 import hexlet.code.Dto.UserDto;
-import hexlet.code.model.Task;
 import hexlet.code.model.User;
 import hexlet.code.repository.UserRepository;
 import lombok.AllArgsConstructor;
-//import org.springframework.boot.autoconfigure.security.servlet.UserDetailsServiceAutoConfiguration;
-//import org.springframework.security.core.context.SecurityContext;
-//import org.springframework.security.core.userdetails.UserDetails;
-//import org.springframework.security.core.userdetails.UserDetailsService;
-//import org.springframework.security.core.userdetails.UsernameNotFoundException;
-//import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Set;
-//import org.springframework.security.crypto.password.PasswordEncoder;
-//import org.springframework.security.core.context.SecurityContextHolder;
 
 @Service
 @Transactional
@@ -55,10 +44,7 @@ public class UserServiceImpl implements UserService {
     public String getCurrentUserName() {
         return SecurityContextHolder.getContext().getAuthentication().getName();
     }
-//    @Override
-//    public User getUserByEmail(String email) {
-//        return userRepository.findByEmail(email).get();
-//    }
+
 
 
 
@@ -72,22 +58,7 @@ public class UserServiceImpl implements UserService {
     public User getUserById(Long id) {
         return userRepository.findById(id).get();
     }
-//
-//    @Override
-//    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-//
-//        return userRepository.findByEmail(username)
-//                .map(this::buildSpringUser)
-//                .orElseThrow(() -> new UsernameNotFoundException("Not found user with 'username': " + username));
-//    }
-//
-//    private UserDetails buildSpringUser(final User user) {
-//        return new org.springframework.security.core.userdetails.User(
-//                user.getEmail(),
-//                user.getPassword(),
-//                DEFAULT_AUTHORITIES
-//        );
-//    }
+
 
 
 }
