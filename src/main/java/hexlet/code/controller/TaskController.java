@@ -59,7 +59,7 @@ public class TaskController {
     }
 
     @ApiResponses(@ApiResponse(responseCode = "200", content =
-    @Content(schema = @Schema(implementation = Task.class))))
+        @Content(schema = @Schema(implementation = Task.class))))
     @Operation(summary = "Get all tasks")
     @GetMapping
     public  Iterable<Task> getAllTask(@Parameter(description = "Predicate based on query params")
