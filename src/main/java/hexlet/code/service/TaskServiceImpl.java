@@ -8,10 +8,13 @@ import hexlet.code.model.User;
 import hexlet.code.repository.LabelRepository;
 import hexlet.code.repository.TaskRepository;
 import hexlet.code.repository.TaskStatusRepository;
+import hexlet.code.repository.UserRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import javax.persistence.EntityManager;
+import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -28,46 +31,43 @@ public class TaskServiceImpl implements TaskService {
     TaskRepository taskRepository;
     private final TaskStatusRepository taskStatusRepository;
     private final LabelRepository labelRepository;
+    private final UserRepository userRepository;
 
     @Override
-    public Task createNewTask(TaskDto taskDto) {
-        final Task newTask = fromDto(taskDto);
-        return taskRepository.save(newTask);
-    }
 
-    @Override
-    public Task updateTask(Long id, TaskDto taskDto) {
-        final Task task = taskRepository.findById(id).get();
-        merge(task, taskDto);
+    public Task createNewTask(final TaskDto taskDto) {
+        final Task task = new Task();
+        task.setName(taskDto.getName());
+        task.setDescription(taskDto.getDescription());
+        final User author = userService.getCurrentUser();
+        task.setAuthor(author);
+        if (taskDto.getExecutorId() != null) {
+            final User executor = userRepository.findById(taskDto.getExecutorId())
+                    .orElseThrow(() -> new RuntimeException("Executor not found"));
+            task.setExecutor(executor);
+        }
+        final TaskStatus taskStatus = taskStatusRepository.findById(taskDto.getTaskStatusId())
+                .orElseThrow(() -> new RuntimeException("TaskStatus not found"));
+        task.setTaskStatus(taskStatus);
         return taskRepository.save(task);
     }
 
-
-    private void merge(final Task task, final TaskDto taskDto) {
-        final Task newTask = fromDto(taskDto);
-        task.setName(newTask.getName());
-        task.setDescription(newTask.getDescription());
-        task.setTaskStatus(newTask.getTaskStatus());
-        task.setAuthor(newTask.getAuthor());
-        task.setExecutor(newTask.getExecutor());
-    }
-
-
-    private Task fromDto(final TaskDto taskDto) {
-        final User author = userService.getUserById(taskDto.getAuthorId());
-        final User executor = userService.getUserById(taskDto.getExecutorId());
-        final TaskStatus taskStatus = taskStatusRepository.getById(taskDto.getTaskStatusId());
-        final Set<Label> labels = taskDto.getLabelIds().stream()
-                .map(id -> labelRepository.getById(id))
-                .collect(Collectors.toSet());
-
-        return Task.builder()
-                .name(taskDto.getName())
-                .description(taskDto.getDescription())
-                .taskStatus(taskStatus)
-                .author(author)
-                .executor(executor)
-                .labels(labels)
-                .build();
+    @Override
+    public Task updateTask(final Long id, final TaskDto taskDto) {
+        final Task task = taskRepository.findById(id)
+                .orElseThrow(() -> new NoSuchElementException("Task not found"));
+        task.setName(taskDto.getName());
+        task.setDescription(taskDto.getDescription());
+        final User author = userService.getCurrentUser();
+        task.setAuthor(author);
+        if (taskDto.getExecutorId() != null) {
+            final User executor = userRepository.findById(taskDto.getExecutorId())
+                    .orElseThrow(() -> new NoSuchElementException("Executor not found"));
+            task.setExecutor(executor);
+        }
+        final TaskStatus taskStatus = taskStatusRepository.findById(taskDto.getTaskStatusId())
+                .orElseThrow(() -> new NoSuchElementException("TaskStatus not found"));
+        task.setTaskStatus(taskStatus);
+        return taskRepository.save(task);
     }
 }

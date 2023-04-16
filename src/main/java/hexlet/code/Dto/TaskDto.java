@@ -5,28 +5,24 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.util.Set;
 
 @Data
-@NoArgsConstructor
 @AllArgsConstructor
+@NoArgsConstructor
 public class TaskDto {
-
-    @NotBlank(message = "Name is mandatory")
+    @NotBlank
+    @Size(min = 1)
     private String name;
 
     private String description;
 
-
-    @NotNull(message = "Task status is mandatory")
+    @NotBlank
     private Long taskStatusId;
 
-//    @NotNull(message = "Author is mandatory")
-    private Long authorId;
+    private Set<Long> labelIds;
 
     private Long executorId;
-
-    private Set<Long> labelIds;
 
 }

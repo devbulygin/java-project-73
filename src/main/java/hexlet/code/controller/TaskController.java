@@ -66,7 +66,7 @@ public class TaskController {
     public Iterable<Task> getFilteredTasks(
             @Parameter(description = "Predicate based on query params")
             @QuerydslPredicate(root = Task.class) Predicate predicate) {
-        return taskRepository.findAll(predicate);
+        return predicate == null ? taskRepository.findAll() : taskRepository.findAll(predicate);
     }
 
 

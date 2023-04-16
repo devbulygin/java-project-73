@@ -1,6 +1,8 @@
 package hexlet.code.service;
 
+import hexlet.code.Dto.TaskDto;
 import hexlet.code.Dto.UserDto;
+import hexlet.code.model.Task;
 import hexlet.code.model.User;
 import hexlet.code.repository.UserRepository;
 import lombok.AllArgsConstructor;
@@ -14,6 +16,8 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.Set;
 //import org.springframework.security.crypto.password.PasswordEncoder;
 //import org.springframework.security.core.context.SecurityContextHolder;
 
@@ -84,4 +88,6 @@ public class UserServiceImpl implements UserService {
 //                DEFAULT_AUTHORITIES
 //        );
 //    }
+
+
 }
