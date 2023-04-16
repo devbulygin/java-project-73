@@ -8,9 +8,6 @@ import hexlet.code.repository.TaskRepository;
 import hexlet.code.service.TaskService;
 
 import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.Parameter;
-import io.swagger.v3.oas.annotations.media.Content;
-import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import lombok.AllArgsConstructor;
@@ -51,6 +48,18 @@ public class TaskController {
     private static final String TASK_OWNER =
             "@taskRepository.findById(#id).get().getAuthor().getEmail() == authentication.getName()";
 
+
+    @Operation(summary = "Get list of all tasks")
+    @ApiResponse(responseCode = "200", description = "List of all tasks")
+    @GetMapping
+    public Iterable<Task> getAllTasks(@QuerydslPredicate(root = Task.class) Predicate predicate) {
+        if (predicate != null) {
+            return taskService.getTasks(predicate);
+        } else {
+            return taskService.getTasks();
+        }
+    }
+
     @Operation(summary = "Get task by id")
     @ApiResponses(@ApiResponse(responseCode = "200"))
     @GetMapping(ID)
@@ -58,14 +67,7 @@ public class TaskController {
         return taskRepository.getById(id);
     }
 
-    @ApiResponses(@ApiResponse(responseCode = "200", content =
-        @Content(schema = @Schema(implementation = Task.class))))
-    @Operation(summary = "Get all tasks")
-    @GetMapping
-    public  Iterable<Task> getAllTask(@Parameter(description = "Predicate based on query params")
-                                      @QuerydslPredicate(root = Task.class) Predicate predicate) {
-        return predicate == null ? taskRepository.findAll() : taskRepository.findAll(predicate);
-    }
+
 
 
     @Operation(summary = "Create task")
@@ -75,6 +77,8 @@ public class TaskController {
     public Task registerNewTask(@RequestBody @Valid final TaskDto taskDto) {
         return taskService.createNewTask(taskDto);
     }
+
+
 
     @Operation(summary = "update task")
     @PutMapping(ID)

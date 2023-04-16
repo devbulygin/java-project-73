@@ -44,6 +44,7 @@ public class LabelController {
     @Operation(summary = "Get label")
     @GetMapping(ID)
     public Label getLabelById(@PathVariable final Long id) {
+
         return labelRepository.getById(id);
     }
 
@@ -61,6 +62,7 @@ public class LabelController {
     @PostMapping
     @ResponseStatus(CREATED)
     public Label regNewLabel(@RequestBody @Valid LabelDto labelDto) {
+
         return labelService.createNewLabel(labelDto);
     }
 
