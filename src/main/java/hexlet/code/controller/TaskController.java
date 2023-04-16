@@ -48,6 +48,8 @@ public class TaskController {
     private static final String ONLY_OWNER_BY_ID = """
             @userRepository.findById(#id).get().getEmail() == authentication.getName()
         """;
+    private static final String TASK_OWNER =
+            "@taskRepository.findById(#id).get().getAuthor().getEmail() == authentication.getName()";
 
     @Operation(summary = "Get task by id")
     @ApiResponses(@ApiResponse(responseCode = "200"))
@@ -88,7 +90,7 @@ public class TaskController {
         @ApiResponse(responseCode = "404", description = "Task not found")
     })
     @Operation(summary = "Delete task")
-    @PreAuthorize(ONLY_OWNER_BY_ID)
+    @PreAuthorize(TASK_OWNER)
     @DeleteMapping(ID)
     public void deleteTaskById(@PathVariable final Long id) {
         taskRepository.deleteById(id);
