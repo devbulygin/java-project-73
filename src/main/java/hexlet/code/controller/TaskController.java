@@ -62,11 +62,11 @@ public class TaskController {
         @Content(schema = @Schema(implementation = Task.class))))
     @Operation(summary = "Get all tasks")
     @GetMapping
-    public  Iterable<Task> getAllTask(@Parameter(description = "Predicate based on query params")
-                                      @QuerydslPredicate(root = Task.class) Predicate predicate) {
-        return predicate == null ? taskRepository.findAll() : taskRepository.findAll(predicate);
+    public Iterable<Task> getFilteredTasks(
+            @Parameter(description = "Predicate based on query params")
+            @QuerydslPredicate(root = Task.class) Predicate predicate) {
+        return taskRepository.findAll(predicate);
     }
-
 
 
     @Operation(summary = "Create task")
