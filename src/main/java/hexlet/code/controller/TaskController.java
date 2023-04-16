@@ -8,6 +8,7 @@ import hexlet.code.repository.TaskRepository;
 import hexlet.code.service.TaskService;
 
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import lombok.AllArgsConstructor;
@@ -52,12 +53,10 @@ public class TaskController {
     @Operation(summary = "Get list of all tasks")
     @ApiResponse(responseCode = "200", description = "List of all tasks")
     @GetMapping
-    public Iterable<Task> getAllTasks(@QuerydslPredicate(root = Task.class) Predicate predicate) {
-        if (predicate != null) {
-            return taskService.getTasks(predicate);
-        } else {
-            return taskService.getTasks();
-        }
+    public Iterable<Task> getFilteredTasks(
+            @Parameter(description = "Predicate based on query params")
+            @QuerydslPredicate(root = Task.class) Predicate predicate) {
+        return taskRepository.findAll(predicate);
     }
 
     @Operation(summary = "Get task by id")
