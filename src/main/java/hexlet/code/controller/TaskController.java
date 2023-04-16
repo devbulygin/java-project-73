@@ -58,14 +58,12 @@ public class TaskController {
         return taskRepository.getById(id);
     }
 
-    @Operation(summary = "Get all Tasks")
-    @ApiResponses(@ApiResponse(responseCode = "200", content = @Content(
-            schema = @Schema(implementation = Task.class))))
+    @ApiResponses(@ApiResponse(responseCode = "200", content =
+        @Content(schema = @Schema(implementation = Task.class))))
+    @Operation(summary = "Get all tasks")
     @GetMapping
-
-    public Iterable<Task> getFilteredTasks(
-            @Parameter(description = "Predicate based on query params")
-            @QuerydslPredicate(root = Task.class) Predicate predicate) {
+    public  Iterable<Task> getAllTask(@Parameter(description = "Predicate based on query params")
+                                      @QuerydslPredicate(root = Task.class) Predicate predicate) {
         return predicate == null ? taskRepository.findAll() : taskRepository.findAll(predicate);
     }
 
