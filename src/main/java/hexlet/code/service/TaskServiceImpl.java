@@ -30,15 +30,6 @@ public class TaskServiceImpl implements TaskService {
     private final LabelRepository labelRepository;
     private final UserRepository userRepository;
 
-
-
-    public Iterable<Task> getTasks() {
-        return taskRepository.findAll();
-    }
-
-    public Iterable<Task> getTasks(Predicate predicate) {
-        return taskRepository.findAll(predicate);
-    }
     @Override
 
     public Task createNewTask(final TaskDto taskDto) {

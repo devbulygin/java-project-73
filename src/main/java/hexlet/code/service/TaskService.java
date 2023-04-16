@@ -12,6 +12,5 @@ public interface TaskService {
 
     Task updateTask(Long id, TaskDto taskDto);
 
-    Iterable<Task> getTasks(Predicate predicate);
-    Iterable<Task> getTasks();
+
 }
