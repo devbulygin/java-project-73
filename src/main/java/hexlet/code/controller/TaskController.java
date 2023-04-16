@@ -88,10 +88,10 @@ public class TaskController {
     @Operation(summary = "delete task")
     @DeleteMapping(ID)
     @PreAuthorize(ONLY_OWNER_BY_ID)
-    public void deleteTaskStatus(@PathVariable long id) {
+    public void deleteTask(@PathVariable long id) {
         Optional<Task> optionalTask = taskRepository.findById(id);
 
-        if (!optionalTask.isPresent()) {
+        if (optionalTask == null) {
             throw new RuntimeException("Task not found");
         }
 //
