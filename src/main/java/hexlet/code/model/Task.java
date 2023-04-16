@@ -50,7 +50,7 @@ public class Task {
     private TaskStatus taskStatus;
 
 
-    @NotNull(message = "Author is mandatory")
+//    @NotNull(message = "Author is mandatory")
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "author_id", nullable = false)
     private User author;

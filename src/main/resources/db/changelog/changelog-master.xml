@@ -84,7 +84,7 @@
                              foreignKeyName="tasks_task_status_id_task_status_id" references="task_statuses(id)"/>
             </column>
             <column name="AUTHOR_ID" type="BIGINT">
-                <constraints nullable="false"
+                <constraints
                              foreignKeyName="tasks_author_id_users_id" references="users(id)"/>
             </column>
             <column name="EXECUTOR_ID" type="BIGINT">

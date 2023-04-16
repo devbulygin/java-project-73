@@ -22,7 +22,7 @@ public class TaskDto {
     @NotNull(message = "Task status is mandatory")
     private Long taskStatusId;
 
-    @NotNull(message = "Author is mandatory")
+//    @NotNull(message = "Author is mandatory")
     private Long authorId;
 
     private Long executorId;
