@@ -3,8 +3,6 @@ package hexlet.code.controller;
 import com.querydsl.core.types.Predicate;
 import hexlet.code.Dto.TaskDto;
 import hexlet.code.model.Task;
-import hexlet.code.model.TaskStatus;
-import hexlet.code.model.User;
 import hexlet.code.repository.TaskRepository;
 
 import hexlet.code.service.TaskService;
