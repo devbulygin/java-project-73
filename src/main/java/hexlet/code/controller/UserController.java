@@ -39,7 +39,7 @@ public class UserController {
     private final TaskRepository taskRepository;
 
     private static final String ONLY_OWNER_BY_ID =
-            "@userRepository.findById(#id).get().getAuthor().getEmail() == authentication.getName()";
+            "@userRepository.findById(#id).get().getEmail() == authentication.getName()";
 
 
     @ApiResponses(@ApiResponse(responseCode = "200"))
