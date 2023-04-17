@@ -1,9 +1,7 @@
 package hexlet.code.controller;
 
 import hexlet.code.Dto.LabelDto;
-
 import hexlet.code.model.Label;
-import hexlet.code.model.Task;
 import hexlet.code.model.User;
 import hexlet.code.repository.LabelRepository;
 import hexlet.code.service.LabelService;
@@ -25,7 +23,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
 import java.util.List;
-import java.util.Set;
 
 import static hexlet.code.controller.LabelController.LABEL_CONTROLLER_PATH;
 import static org.springframework.http.HttpStatus.CREATED;

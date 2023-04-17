@@ -2,7 +2,6 @@ package hexlet.code.controller;
 
 
 import hexlet.code.Dto.TaskStatusDto;
-import hexlet.code.model.Task;
 import hexlet.code.model.TaskStatus;
 import hexlet.code.repository.TaskRepository;
 import hexlet.code.repository.TaskStatusRepository;
@@ -26,7 +25,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
 import java.util.List;
-import java.util.Set;
 
 import static hexlet.code.controller.TaskStatusController.TASK_STATUS_CONTROLLER_PATH;
 import static org.springframework.http.HttpStatus.CREATED;
@@ -82,12 +80,7 @@ public class TaskStatusController {
     @Operation(summary = "delete task status")
     @DeleteMapping(ID)
     public void deleteTaskStatus(@PathVariable long id) {
-        TaskStatus taskStatus = taskStatusRepository.getById(id);
 
-        Set<Task> tasks = taskStatus.getTasks();
-        if (tasks != null) {
-            throw new RuntimeException("Task status is connected to task, cannot delete");
-        }
 
         taskStatusRepository.deleteById(id);
     }
