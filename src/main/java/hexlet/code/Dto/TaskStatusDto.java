@@ -14,5 +14,4 @@ public class TaskStatusDto {
     @NotBlank
     @Size(min = 1)
     private String name;
-
 }

@@ -7,11 +7,11 @@ public interface UserService {
     User createNewUser(UserDto userDto);
 
     User updateUser(Long id, UserDto userDto);
-
-
     String getCurrentUserName();
 
     User getCurrentUser();
 
     User getUserById(Long id);
+
+    void deleteUserById(Long id);
 }

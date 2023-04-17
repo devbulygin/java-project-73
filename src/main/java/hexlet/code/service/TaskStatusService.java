@@ -6,8 +6,5 @@ import hexlet.code.model.TaskStatus;
 public interface TaskStatusService {
 
     TaskStatus createNewTaskStatus(TaskStatusDto taskStatusDto);
-
     TaskStatus updateTaskStatus(Long id, TaskStatusDto taskStatusDto);
-
-
 }

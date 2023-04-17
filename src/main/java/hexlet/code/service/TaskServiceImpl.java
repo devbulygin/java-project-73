@@ -11,6 +11,7 @@ import hexlet.code.repository.UserRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
 import javax.persistence.EntityManager;
 import java.util.NoSuchElementException;
 
@@ -19,12 +20,9 @@ import java.util.NoSuchElementException;
 @Transactional
 @AllArgsConstructor
 public class TaskServiceImpl implements TaskService {
-
-    EntityManager entityManager;
-
+    private final EntityManager entityManager;
     private final UserService userService;
-
-    TaskRepository taskRepository;
+    private final TaskRepository taskRepository;
     private final TaskStatusRepository taskStatusRepository;
     private final LabelRepository labelRepository;
     private final UserRepository userRepository;

@@ -1,8 +1,12 @@
 package hexlet.code.model;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.Fetch;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -19,41 +23,45 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.util.Date;
 import java.util.Set;
+
+import static javax.persistence.GenerationType.AUTO;
 import static javax.persistence.TemporalType.TIMESTAMP;
+import static org.hibernate.annotations.FetchMode.JOIN;
+
 @Entity
-@Table(name = "tasks")
 @Getter
 @Setter
+@Table(name = "tasks")
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class Task {
+
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = AUTO)
     private Long id;
 
+    @ManyToOne
+    private User author;
+
+    @ManyToOne
+    private User executor;
+
+    @ManyToOne
+    private TaskStatus taskStatus;
+
+    @ManyToMany
+    @Fetch(JOIN)
+    private Set<Label> labels;
+
     @NotBlank
-    @Size(min = 1)
-    @Column(unique = true)
+    @Size(min = 3, max = 1000)
     private String name;
 
     private String description;
 
-    @NotNull
-    @ManyToOne
-    @JoinColumn(name = "task_status_id")
-    private TaskStatus taskStatus;
-
-    @NotNull
-    @ManyToOne
-    @JoinColumn(name = "author_id")
-    private User author;
-
-    @ManyToOne
-    @JoinColumn(name = "executor_id")
-    private User executor;
-
-    @ManyToMany
-    private Set<Label> labels;
-
     @CreationTimestamp
     @Temporal(TIMESTAMP)
     private Date createdAt;
+
 }

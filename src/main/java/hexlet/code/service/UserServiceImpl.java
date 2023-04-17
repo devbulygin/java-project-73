@@ -1,6 +1,7 @@
 package hexlet.code.service;
 
 import hexlet.code.Dto.UserDto;
+import hexlet.code.model.Task;
 import hexlet.code.model.User;
 import hexlet.code.repository.UserRepository;
 import lombok.AllArgsConstructor;
@@ -8,6 +9,8 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.Set;
 
 
 @Service
@@ -19,6 +22,7 @@ public class UserServiceImpl implements UserService {
 
 
     private final PasswordEncoder passwordEncoder;
+
     @Override
     public User createNewUser(UserDto userDto) {
         User user = new User();
@@ -45,11 +49,6 @@ public class UserServiceImpl implements UserService {
         return SecurityContextHolder.getContext().getAuthentication().getName();
     }
 
-
-
-
-
-
     @Override
     public User getCurrentUser() {
         return userRepository.findByEmail(getCurrentUserName()).get();
@@ -59,6 +58,20 @@ public class UserServiceImpl implements UserService {
         return userRepository.findById(id).get();
     }
 
+    public void deleteUserById (long id) {
+        User user = userRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("User " + id + " not found"));
+
+        Set<Task> tasksAuthor = user.getTasksAuthor();
+        Set<Task> tasksExecutor = user.getTasksExecutor();
+        if (!tasksAuthor.isEmpty()) {
+            throw new RuntimeException("User is task author, cannot delete");
+        }
+        if (!tasksExecutor.isEmpty()) {
+            throw new RuntimeException("User has task, cannot delete");
+        }
+        userRepository.deleteById(id);
+    }
 
 
 }

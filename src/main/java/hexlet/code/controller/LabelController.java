@@ -65,23 +65,15 @@ public class LabelController {
 
         return labelService.createNewLabel(labelDto);
     }
-
     @Operation(summary = "Update label")
     @PutMapping(ID)
     public Label updateLabel(@RequestBody @Valid final LabelDto dto, @PathVariable long id) {
         return labelService.updateLabel(id, dto);
     }
-
     @Operation(summary = "delete label")
     @DeleteMapping(ID)
     public void deleteLabel(@PathVariable long id) {
-        Label label = labelRepository.getById(id);
 
-        Set<Task> tasks = label.getTasks();
-
-        if (tasks != null) {
-            throw new RuntimeException("label connected to task");
-        }
         labelRepository.deleteById(id);
     }
 

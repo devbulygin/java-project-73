@@ -65,8 +65,6 @@ public class TaskController {
     }
 
 
-
-
     @Operation(summary = "Create task")
     @ApiResponse(responseCode = "201", description = "Task  created")
     @PostMapping
@@ -76,7 +74,6 @@ public class TaskController {
     }
 
 
-
     @Operation(summary = "update task")
     @PutMapping(ID)
     public Task updateTask(@RequestBody @Valid final TaskDto taskDto, @PathVariable long id) {
@@ -84,8 +81,8 @@ public class TaskController {
     }
 
     @ApiResponses(value = {
-        @ApiResponse(responseCode = "200", description = "Task delete"),
-        @ApiResponse(responseCode = "404", description = "Task not found")
+            @ApiResponse(responseCode = "200", description = "Task delete"),
+            @ApiResponse(responseCode = "404", description = "Task not found")
     })
     @Operation(summary = "Delete task")
     @PreAuthorize(TASK_OWNER)

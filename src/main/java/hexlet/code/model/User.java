@@ -1,6 +1,8 @@
 package hexlet.code.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GenerationType;
 import javax.persistence.OneToMany;
@@ -17,6 +19,7 @@ import javax.validation.constraints.Email;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Temporal;
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.util.Date;
@@ -27,53 +30,42 @@ import org.hibernate.annotations.CreationTimestamp;
 
 import static javax.persistence.CascadeType.ALL;
 import static javax.persistence.FetchType.EAGER;
+import static javax.persistence.GenerationType.AUTO;
 import static javax.persistence.TemporalType.TIMESTAMP;
 
 @Entity
-@Table(name = "users")
 @Getter
 @Setter
-@Builder
+@Table(name = "users")
 @NoArgsConstructor
 @AllArgsConstructor
 public class User {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = AUTO)
     private Long id;
 
-
-    @NotNull
-    @Size(min = 1)
-    private String firstName;
-
-
-    @NotNull
-    @Size(min = 1)
-    private String lastName;
-
-
-    @NotNull
-    @Email
+    @Column(unique = true)
     private String email;
 
+    @NotBlank
+    private String firstName;
 
-    @NotNull
+    @NotBlank
+    private String lastName;
+
+    @NotBlank
+    @Size(min = 3, max = 100)
     @JsonIgnore
     private String password;
-
-
-    @OneToMany(mappedBy = "author", cascade = ALL, fetch = EAGER)
-    private Set<Task> tasksAuthor;
-
-    @OneToMany(mappedBy = "executor", cascade = ALL, fetch = EAGER)
-    @ToString.Exclude
-    private Set<Task> tasksExecutor;
 
     @CreationTimestamp
     @Temporal(TIMESTAMP)
     private Date createdAt;
 
+    public User(final Long id) {
+        this.id = id;
+    }
 
 
 }

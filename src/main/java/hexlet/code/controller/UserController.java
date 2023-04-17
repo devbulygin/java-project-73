@@ -12,6 +12,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import lombok.AllArgsConstructor;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -36,12 +37,12 @@ import static org.springframework.http.HttpStatus.CREATED;
 public class UserController {
     public static final String USER_CONTROLLER_PATH = "/users";
     public static final String ID = "/{id}";
-
     private final UserService userService;
     private final UserRepository userRepository;
-
     private final TaskRepository taskRepository;
 
+    private static final String ONLY_OWNER_BY_ID =
+            "@userRepository.findById(#id).get().getAuthor().getEmail() == authentication.getName()";
 
 
     @ApiResponses(@ApiResponse(responseCode = "200"))
@@ -77,29 +78,11 @@ public class UserController {
     }
 
     @Operation(summary = "delete user")
+    @PreAuthorize(ONLY_OWNER_BY_ID)
     @DeleteMapping(ID)
     public void deleteUser(@PathVariable long id) {
 
-        Optional<User> optionalUser = userRepository.findById(id);
-
-        if (!optionalUser.isPresent()) {
-            throw new RuntimeException("User not found");
-        }
-
-        User user = optionalUser.get();
-
-        Set<Task> tasksAuthor = user.getTasksAuthor();
-        Set<Task> tasksExecutor = user.getTasksExecutor();
-        if (tasksAuthor != null) {
-            throw new RuntimeException("User is task author, cannot delete");
-        }
-
-        if (tasksExecutor != null) {
-            throw new RuntimeException("User has task, cannot delete");
-        }
-
-        userRepository.deleteById(id);
-
+        userService.deleteUserById(id);
     }
 
 }

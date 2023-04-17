@@ -20,7 +20,6 @@ import static org.springframework.security.web.authentication.UsernamePasswordAu
 public class JWTAuthorizationFilter extends OncePerRequestFilter {
 
     private static final String BEARER = "Bearer";
-
     private final RequestMatcher publicUrls;
     private final JWTHelper jwtHelper;
 
@@ -51,7 +50,6 @@ public class JWTAuthorizationFilter extends OncePerRequestFilter {
 
         SecurityContextHolder.getContext().setAuthentication(authToken);
         filterChain.doFilter(request, response);
-
     }
 
     private UsernamePasswordAuthenticationToken buildAuthToken(final String username) {

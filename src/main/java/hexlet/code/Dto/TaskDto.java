@@ -16,14 +16,9 @@ public class TaskDto {
     @NotBlank
     @Size(min = 1)
     private String name;
-
     private String description;
-
     @NotNull
     private Long taskStatusId;
-
     private Set<Long> labelIds;
-
     private Long executorId;
-
 }

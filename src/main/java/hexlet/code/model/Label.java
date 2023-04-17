@@ -8,6 +8,7 @@ import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -17,37 +18,38 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.util.Date;
 import java.util.Set;
 
+import static javax.persistence.GenerationType.AUTO;
 import static javax.persistence.TemporalType.TIMESTAMP;
 
 @Entity
-@Table(name = "labels")
 @Getter
 @Setter
+@Table(name = "labels")
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
 public class Label {
+
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = AUTO)
     private Long id;
 
-    @NotNull
-    @Size(min = 1)
+    @NotBlank
+    @Size(min = 3, max = 1_000)
+    @Column(unique = true)
     private String name;
 
     @CreationTimestamp
     @Temporal(TIMESTAMP)
     private Date createdAt;
 
-    @ManyToMany(cascade = CascadeType.ALL)
-    @JoinTable(name = "task_labels",
-            joinColumns = @JoinColumn(name = "task_id", referencedColumnName = "id"),
-            inverseJoinColumns = @JoinColumn(name = "label_id",
-                    referencedColumnName = "id"))
-    private Set<Task> tasks;
+    public Label(final Long id) {
+        this.id = id;
+    }
 }
