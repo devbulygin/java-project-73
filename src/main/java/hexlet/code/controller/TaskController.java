@@ -43,9 +43,7 @@ public class TaskController {
 
     private final TaskService taskService;
 
-    private static final String ONLY_OWNER_BY_ID = """
-            @userRepository.findById(#id).get().getEmail() == authentication.getName()
-        """;
+
     private static final String TASK_OWNER =
             "@taskRepository.findById(#id).get().getAuthor().getEmail() == authentication.getName()";
 
