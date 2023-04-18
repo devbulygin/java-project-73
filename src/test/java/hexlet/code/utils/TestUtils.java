@@ -3,9 +3,8 @@ package hexlet.code.utils;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-
-import hexlet.code.Dto.TaskStatusDto;
 import hexlet.code.Dto.UserDto;
+import hexlet.code.component.JWTHelper;
 import hexlet.code.model.User;
 import hexlet.code.repository.LabelRepository;
 import hexlet.code.repository.TaskRepository;
@@ -17,11 +16,8 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 
-import hexlet.code.component.JWTHelper;
-
 import java.util.Map;
 
-import static hexlet.code.controller.TaskStatusController.TASK_STATUS_CONTROLLER_PATH;
 import static hexlet.code.controller.UserController.USER_CONTROLLER_PATH;
 import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
@@ -29,85 +25,65 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 
 @Component
 public class TestUtils {
-    private String userPath = "/api" + USER_CONTROLLER_PATH;
 
-    private String taskStatusPath = "/api" + TASK_STATUS_CONTROLLER_PATH;
+    public static final String BASE_URL = "/api";
+    public static final String TEST_USERNAME = "email@email.com";
+    public static final String TEST_USERNAME_2 = "email2@email.com";
 
-    public static final String TEST_EMAIL = "email@email.com";
-    public static final String TEST_EMAIL_2 = "email2@email.com";
-
-    public static final String TEST_TASK_STATUS = "new task";
-    public static final String TEST_TASK_STATUS_2 = "in work";
-
-    public static final String TEST_TASK_NAME = "fix checkstyle error";
-    public static final String TEST_TASK = "in work";
-
-
-
-    private final UserDto testRegistrationUserDto = new UserDto(
-            TEST_EMAIL,
+    private final UserDto testRegistrationDto = new UserDto(
+            TEST_USERNAME,
             "fname",
             "lname",
             "pwd"
     );
 
-    private final TaskStatusDto testRegistrationTaskStatusDto = new TaskStatusDto(
-            TEST_TASK_STATUS);
-
-
     public UserDto getTestRegistrationDto() {
-        return testRegistrationUserDto;
+        return testRegistrationDto;
     }
 
     @Autowired
     private MockMvc mockMvc;
 
     @Autowired
-    private TaskStatusRepository taskStatusRepository;
-
-    @Autowired
     private UserRepository userRepository;
 
     @Autowired
+    private TaskStatusRepository statusRepository;
+
+    @Autowired
+    private LabelRepository labelRepository;
+
+    @Autowired
+    private TaskRepository taskRepository;
+
+    @Autowired
     private JWTHelper jwtHelper;
+
+    public void tearDown() {
+        taskRepository.deleteAll();
+        labelRepository.deleteAll();
+        statusRepository.deleteAll();
+        userRepository.deleteAll();
+    }
 
     public User getUserByEmail(final String email) {
         return userRepository.findByEmail(email).get();
     }
 
     public ResultActions regDefaultUser() throws Exception {
-        return regUser(testRegistrationUserDto);
+        return regUser(testRegistrationDto);
     }
 
-    public ResultActions regDefaultTaskStatus() throws Exception {
-        return regTaskStatus(testRegistrationTaskStatusDto);
-    }
-
-//    public ResultActions regDefaultTask() throws Exception {
-//        return regTask(testRegistrationTaskDto);
-//    }
-
-    public ResultActions regTaskStatus(final TaskStatusDto taskStatusDto) throws Exception {
-        final var request = post(taskStatusPath)
-                .content(asJson(taskStatusDto))
+    public ResultActions regUser(final UserDto dto) throws Exception {
+        final var request = post(BASE_URL + USER_CONTROLLER_PATH)
+                .content(asJson(dto))
                 .contentType(APPLICATION_JSON);
 
         return perform(request);
     }
 
-
-    public ResultActions regUser(final UserDto userDto) throws Exception {
-        final var request = post(userPath)
-                .content(asJson(userDto))
-                .contentType(APPLICATION_JSON);
-
-
-
-        return perform(request);
-    }
-
-    public ResultActions perform(final MockHttpServletRequestBuilder request, final String byEmail) throws Exception {
-        final String token = jwtHelper.expiring(Map.of("email", byEmail));
+    public ResultActions perform(final MockHttpServletRequestBuilder request, final String byUser) throws Exception {
+        final String token = jwtHelper.expiring(Map.of("username", byUser));
         request.header(AUTHORIZATION, token);
 
         return perform(request);
@@ -118,10 +94,6 @@ public class TestUtils {
     }
 
     private static final ObjectMapper MAPPER = new ObjectMapper().findAndRegisterModules();
-    @Autowired
-    private TaskRepository taskRepository;
-    @Autowired
-    private LabelRepository labelRepository;
 
     public static String asJson(final Object object) throws JsonProcessingException {
         return MAPPER.writeValueAsString(object);
@@ -131,10 +103,4 @@ public class TestUtils {
         return MAPPER.readValue(json, to);
     }
 
-    public void tearDown() {
-        taskStatusRepository.deleteAll();
-        labelRepository.deleteAll();
-        userRepository.deleteAll();
-        taskRepository.deleteAll();
-    }
 }

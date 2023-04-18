@@ -1,106 +1,128 @@
-//package hexlet.code.controller;
-//
-//import com.fasterxml.jackson.core.type.TypeReference;
-//import hexlet.code.Dto.TaskDto;
-//
-//import hexlet.code.config.SpringConfigForIT;
-//import hexlet.code.model.Task;
-//
-//import hexlet.code.model.User;
-//import hexlet.code.repository.TaskRepository;
-//import hexlet.code.repository.TaskStatusRepository;
-//import hexlet.code.repository.UserRepository;
-//import hexlet.code.utils.TestUtils;
-//import org.junit.jupiter.api.AfterEach;
-//import org.junit.jupiter.api.BeforeEach;
-//import org.junit.jupiter.api.Disabled;
-//import org.junit.jupiter.api.Test;
-//import org.junit.jupiter.api.extension.ExtendWith;
-//import org.springframework.beans.factory.annotation.Autowired;
-//import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
-//import org.springframework.boot.test.context.SpringBootTest;
-//import org.springframework.test.context.ActiveProfiles;
-//import org.springframework.test.context.junit.jupiter.SpringExtension;
-//
-//import java.util.List;
-//
-//import static hexlet.code.config.SpringConfigForIT.TEST_PROFILE;
-//import static hexlet.code.controller.TaskController.TASK_CONTROLLER_PATH;
-//import static hexlet.code.controller.TaskController.ID;
-//import static hexlet.code.utils.TestUtils.TEST_TASK_STATUS;
-//import static hexlet.code.utils.TestUtils.TEST_TASK_STATUS_2;
-//import static hexlet.code.utils.TestUtils.asJson;
-//import static hexlet.code.utils.TestUtils.fromJson;
-//import static org.assertj.core.api.Assertions.assertThat;
-//import static org.junit.jupiter.api.Assertions.assertEquals;
-//import static org.junit.jupiter.api.Assertions.assertNotNull;
-//import static org.junit.jupiter.api.Assertions.assertTrue;
-//import static org.springframework.boot.test.context.SpringBootTest.WebEnvironment.RANDOM_PORT;
-//import static org.springframework.http.MediaType.APPLICATION_JSON;
-//import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
-//import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-//import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
-//import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-//
-//@AutoConfigureMockMvc
-//@ActiveProfiles(TEST_PROFILE)
-//@ExtendWith(SpringExtension.class)
-//@SpringBootTest(webEnvironment = RANDOM_PORT, classes = SpringConfigForIT.class)
-//public class TaskControllerIT {
-//    private String fullPath = "/api" + TASK_CONTROLLER_PATH;
-//
-//    @Autowired
-//    private TaskRepository taskRepository;
-//
-//    @Autowired
-//    private TaskStatusRepository taskStatusRepository;
-//
-//    @Autowired
-//    private TestUtils utils;
-//    @Autowired
-//    private UserRepository userRepository;
-//
-//    @BeforeEach
-//    public void before() throws Exception {
-//        utils.regDefaultUser();
-//        utils.regDefaultTaskStatus();
-//    }
-//
-//    @AfterEach
-//    public void clear() {
-//        utils.tearDown();
-//    }
-//
-//
-////    private TaskDto buildTask(final long authorId, final long executorId, final long taskStatusId) {
-////        return new TaskDto(
-////                "fix checkstyle error",
-////        "",
-////                taskStatusId,
-////                authorId,
-////                executorId
-////                );
-////    }
-//
-////    @Test
-////    public void createNewTask() {
-////        final long authorId =
-////    }
-//
-////    private User createNewAuthor() {
-////        return userRepository.save(User.builder()
-////                        .firstName("John")
-////                        .lastName("Cena")
-////                        .email(utils.getUserByEmail())
-////                        .password()
-////                .build())
-////    }
-////
-//
-//
-//
-//
-//
-//
-//
-//}
+package hexlet.code.controller;
+
+import com.fasterxml.jackson.core.type.TypeReference;
+import hexlet.code.Dto.LabelDto;
+import hexlet.code.Dto.TaskDto;
+import hexlet.code.Dto.TaskStatusDto;
+import hexlet.code.config.SpringConfigForIT;
+import hexlet.code.model.Label;
+import hexlet.code.model.Task;
+import hexlet.code.model.TaskStatus;
+import hexlet.code.model.User;
+import hexlet.code.repository.LabelRepository;
+import hexlet.code.repository.TaskRepository;
+import hexlet.code.repository.TaskStatusRepository;
+import hexlet.code.repository.UserRepository;
+import hexlet.code.utils.TestUtils;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.ActiveProfiles;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
+
+import java.util.HashSet;
+import java.util.Set;
+
+import static hexlet.code.config.SpringConfigForIT.TEST_PROFILE;
+import static hexlet.code.controller.LabelController.LABEL_CONTROLLER_PATH;
+import static hexlet.code.controller.TaskController.TASK_CONTROLLER_PATH;
+import static hexlet.code.controller.TaskStatusController.TASK_STATUS_CONTROLLER_PATH;
+import static hexlet.code.utils.TestUtils.TEST_USERNAME;
+import static hexlet.code.utils.TestUtils.asJson;
+import static hexlet.code.utils.TestUtils.fromJson;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.springframework.boot.test.context.SpringBootTest.WebEnvironment.RANDOM_PORT;
+import static org.springframework.http.MediaType.APPLICATION_JSON;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
+@AutoConfigureMockMvc
+@ActiveProfiles(TEST_PROFILE)
+@ExtendWith(SpringExtension.class)
+@SpringBootTest(webEnvironment = RANDOM_PORT, classes = SpringConfigForIT.class)
+public class TaskControllerIT {
+    public static final String BASE_URL = "/api";
+    @Autowired
+    private UserRepository userRepository;
+
+    @Autowired
+    private TaskRepository taskRepository;
+
+    @Autowired
+    private LabelRepository labelRepository;
+
+    @Autowired
+    private TaskStatusRepository statusRepository;
+
+    @Autowired
+    private TestUtils utils;
+
+
+    @AfterEach
+    public void clear() {
+        utils.tearDown();
+    }
+
+    @Test
+    public void testCreateTask() throws Exception {
+        utils.regDefaultUser();
+        final User expectedUser = userRepository.findAll().get(0);
+
+        final var taskStatusDto = new TaskStatusDto("TaskStatus dto test 1");
+
+        final var taskStatusPostRequest = post(BASE_URL + TASK_STATUS_CONTROLLER_PATH)
+                .content(asJson(taskStatusDto))
+                .contentType(APPLICATION_JSON);
+
+        final TaskStatus status = fromJson((utils.perform(taskStatusPostRequest, TEST_USERNAME)
+                .andExpect(status().isCreated())
+                .andReturn()
+                .getResponse())
+                .getContentAsString(), new TypeReference<>() {
+                });
+
+        final var labelDto = new LabelDto("first Test Label");
+
+        final var labelPostRequest = post(BASE_URL + LABEL_CONTROLLER_PATH)
+                .content(asJson(labelDto))
+                .contentType(APPLICATION_JSON);
+
+        final Label label = fromJson((utils.perform(labelPostRequest, TEST_USERNAME)
+                .andExpect(status().isCreated())
+                .andReturn()
+                .getResponse())
+                .getContentAsString(), new TypeReference<>() {
+                });
+
+        Set<Long> labels = new HashSet<>();
+        labels.add(label.getId());
+
+        final var taskDto = new TaskDto("first Test Task Name",
+                "first Test Task description",
+                status.getId(), labels, expectedUser.getId()
+        );
+
+        final var taskPostRequest = post(BASE_URL + TASK_CONTROLLER_PATH)
+                .content(asJson(taskDto))
+                .contentType(APPLICATION_JSON);
+
+        final var response = utils.perform(taskPostRequest, TEST_USERNAME)
+                .andExpect(status().isCreated())
+                .andReturn()
+                .getResponse();
+
+        final Task task = fromJson(response.getContentAsString(), new TypeReference<>() {
+        });
+
+        assertEquals(task.getName(), taskDto.getName());
+        assertEquals(task.getDescription(), taskDto.getDescription());
+        assertEquals(task.getExecutor().getId(), taskDto.getExecutorId());
+        assertEquals(task.getTaskStatus().getId(), taskDto.getTaskStatusId());
+    }
+
+
+}
+
