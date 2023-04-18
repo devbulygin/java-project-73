@@ -18,6 +18,7 @@ import javax.persistence.Temporal;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.Set;
 
 import static javax.persistence.GenerationType.AUTO;
@@ -48,7 +49,7 @@ public class Task {
 
     @ManyToMany
     @Fetch(JOIN)
-    private Set<Label> labels;
+    private Set<Label> labels = new HashSet<>();
 
     @NotBlank
     @Size(min = 3, max = 1000)
