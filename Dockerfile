@@ -4,6 +4,6 @@ WORKDIR /app
 
 COPY / .
 
-RUN ./gradlew bootRun --args='--spring.profiles.active=prod'
+RUN ./gradlew installDist
 
 CMD build/install/app/bin/app
