@@ -82,9 +82,9 @@ dependencies {
 
 }
 
-//openApi {
-//    apiDocsUrl.set("http://localhost:8080/api-docs")
-//}
+openApi {
+    apiDocsUrl.set("http://localhost:8080/api-docs")
+}
 
 
 

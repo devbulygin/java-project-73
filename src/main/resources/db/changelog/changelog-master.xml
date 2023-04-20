@@ -4,6 +4,12 @@
         <createSequence sequenceName="hibernate_sequence"/>
     </changeSet>
     <changeSet author="pavelbulygin (generated)" id="1682022017317-2">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <tableExists tableName="labels" schemaName="public"/>
+            </not>
+        </preConditions>
+
         <createTable tableName="labels">
             <column autoIncrement="true" name="id" type="BIGINT">
                 <constraints primaryKey="true" primaryKeyName="labelsPK"/>
@@ -13,6 +19,12 @@
         </createTable>
     </changeSet>
     <changeSet author="pavelbulygin (generated)" id="1682022017317-3">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <tableExists tableName="task_statuses" schemaName="public"/>
+            </not>
+        </preConditions>
+
         <createTable tableName="task_statuses">
             <column autoIncrement="true" name="id" type="BIGINT">
                 <constraints primaryKey="true" primaryKeyName="task_statusesPK"/>
@@ -22,7 +34,13 @@
         </createTable>
     </changeSet>
     <changeSet author="pavelbulygin (generated)" id="1682022017317-4">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <tableExists tableName="tasks" schemaName="public"/>
+            </not>
+        </preConditions>
         <createTable tableName="tasks">
+
             <column autoIncrement="true" name="id" type="BIGINT">
                 <constraints primaryKey="true" primaryKeyName="tasksPK"/>
             </column>
@@ -35,6 +53,12 @@
         </createTable>
     </changeSet>
     <changeSet author="pavelbulygin (generated)" id="1682022017317-5">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <tableExists tableName="tasks_labels" schemaName="public"/>
+            </not>
+        </preConditions>
+
         <createTable tableName="tasks_labels">
             <column name="task_id" type="BIGINT">
                 <constraints primaryKey="true"/>
