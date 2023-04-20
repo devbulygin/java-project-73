@@ -1,123 +1,67 @@
-<?xml version="1.0" encoding="UTF-8"?>
-
-<databaseChangeLog
-        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
-        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-        xmlns:pro="http://www.liquibase.org/xml/ns/pro"
-        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
-  http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.1.xsd http://www.liquibase.org/xml/ns/pro http://www.liquibase.org/xml/ns/pro/liquibase-pro-4.1.xsd">
-
-    <changeSet id="1" author="devbulygin">
-        <!-- Создаём таблицу -->
-        <!-- Указываем имя таблицы -->
-        <createTable tableName="users">
-            <!-- Создаём столбцы таблицы -->
-            <!-- Указываем имя и тип данных в столбце -->
-            <!-- Указываем что значение поля генерируется автоматически -->
-            <column name="id" type="bigint" autoIncrement="true">
-                <!-- Указываем, что значение является первичным ключом -->
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext" xmlns:pro="http://www.liquibase.org/xml/ns/pro" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd http://www.liquibase.org/xml/ns/pro http://www.liquibase.org/xml/ns/pro/liquibase-pro-3.8.xsd http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+    <changeSet author="pavelbulygin (generated)" id="1681977513903-10">
+        <createSequence sequenceName="hibernate_sequence"/>
+    </changeSet>
+    <changeSet author="pavelbulygin (generated)" id="1681977513903-11">
+        <createTable tableName="tasks_labels">
+            <column name="task_id" type="BIGINT">
                 <constraints primaryKey="true"/>
             </column>
-            <!-- Создаём остальные столбцы -->
-            <column  name="first_name"  type="varchar(250)">
-
-            </column>
-            <column  name="last_name"  type="varchar(250)"/>
-            <column  name="email"  type="varchar(250)"/>
-            <column  name="password"  type="varchar(250)"/>
-            <column name="created_at" type="TIMESTAMP"/>
-        </createTable>
-    </changeSet>
-
-<!--    <changeSet id="2" author="devbulygin">-->
-
-<!--        <addNotNullConstraint columnDataType="varchar(250)"-->
-<!--                              columnName="FIRST_NAME"-->
-<!--                              tableName="USERS"-->
-<!--                              validate="true"/>-->
-<!--        <addNotNullConstraint columnDataType="varchar(250)"-->
-<!--                              columnName="LAST_NAME"-->
-<!--                              tableName="USERS"-->
-<!--                              validate="true"/>-->
-<!--        <addNotNullConstraint columnDataType="varchar(250)"-->
-<!--                              columnName="EMAIL"-->
-<!--                              tableName="USERS"-->
-<!--                              validate="true"/>-->
-<!--        <addNotNullConstraint columnDataType="varchar(250)"-->
-<!--                              columnName="PASSWORD"-->
-<!--                              tableName="USERS"-->
-<!--                              validate="true"/>-->
-<!--    </changeSet>-->
-
-    <changeSet id="3" author="devbulygin">
-        <createTable tableName="TASK_STATUSES">
-            <column name="ID" type="bigint" autoIncrement="true">
+            <column name="labels_id" type="BIGINT">
                 <constraints primaryKey="true"/>
             </column>
-
-            <column  name="NAME"  type="varchar(250)">
-                <constraints nullable="false"/>
-            </column>
-
-            <column name="CREATED_AT" type="TIMESTAMP"/>
         </createTable>
     </changeSet>
-
-    <changeSet id="4" author="devbulygin">
-        <!-- Создаём таблицу -->
-        <!-- Указываем имя таблицы -->
-        <createTable tableName="TASKS">
-            <!-- Создаём столбцы таблицы -->
-            <!-- Указываем имя и тип данных в столбце -->
-            <!-- Указываем что значение поля генерируется автоматически -->
-            <column name="ID" type="bigint" autoIncrement="true">
-                <!-- Указываем, что значение является первичным ключом -->
-                <constraints primaryKey="true"/>
-            </column>
-            <!-- Создаём остальные столбцы -->
-            <column  name="NAME"  type="varchar(250)">
-                <constraints nullable="false"/>
-            </column>
-            <column name="DESCRIPTION" type="VARCHAR(255)"/>
-            <column name="TASK_STATUS_ID" type="BIGINT">
-                <constraints nullable="false"
-                             foreignKeyName="tasks_task_status_id_task_status_id" references="task_statuses(id)"/>
-            </column>
-            <column name="AUTHOR_ID" type="BIGINT">
-                <constraints
-                             foreignKeyName="tasks_author_id_users_id" references="users(id)"/>
-            </column>
-            <column name="EXECUTOR_ID" type="BIGINT">
-                <constraints
-                        foreignKeyName="tasks_executor_id_users_id" references="users(id)"/>
-            </column>
-            <column name="CREATED_AT" type="TIMESTAMP"/>
-        </createTable>
+    <changeSet author="pavelbulygin (generated)" id="1681977513903-12">
+        <addUniqueConstraint columnNames="name" constraintName="UC_LABELSNAME_COL" tableName="labels"/>
     </changeSet>
-    <changeSet id="5" author="devbulygin">
-        <!-- Создаём таблицу -->
-        <!-- Указываем имя таблицы -->
-        <createTable tableName="LABELS">
-            <!-- Создаём столбцы таблицы -->
-            <!-- Указываем имя и тип данных в столбце -->
-            <!-- Указываем что значение поля генерируется автоматически -->
-            <column name="ID" type="bigint" autoIncrement="true">
-                <!-- Указываем, что значение является первичным ключом -->
-                <constraints primaryKey="true"/>
-            </column>
-            <!-- Создаём остальные столбцы -->
-            <column  name="NAME"  type="varchar(250)">
-                <constraints nullable="false"/>
-            </column>
-            <column name="CREATED_AT" type="TIMESTAMP"/>
-            <column name="DESCRIPTION" type="VARCHAR(255)"/>
-            <column name="TASKS_ID" type="BIGINT">
-                <constraints nullable="false"
-                             foreignKeyName="Labels_tasks_id_tasks_id_labels_id" references="tasks(id)"/>
-            </column>
-
-
-        </createTable>
+    <changeSet author="pavelbulygin (generated)" id="1681977513903-13">
+        <addUniqueConstraint columnNames="name" constraintName="UC_TASK_STATUSESNAME_COL" tableName="task_statuses"/>
     </changeSet>
-
+    <changeSet author="pavelbulygin (generated)" id="1681977513903-14">
+        <addUniqueConstraint columnNames="email" constraintName="UC_USERSEMAIL_COL" tableName="users"/>
+    </changeSet>
+    <changeSet author="pavelbulygin (generated)" id="1681977513903-15">
+        <addForeignKeyConstraint baseColumnNames="labels_id" baseTableName="tasks_labels" constraintName="FK1jqo1eikgg8xnhi58yp81b8nl" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="labels" validate="true"/>
+    </changeSet>
+    <changeSet author="pavelbulygin (generated)" id="1681977513903-16">
+        <addForeignKeyConstraint baseColumnNames="task_id" baseTableName="tasks_labels" constraintName="FK9qrs86gyw7ctgqiwqvr9jkf0l" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="tasks" validate="true"/>
+    </changeSet>
+    <changeSet author="pavelbulygin (generated)" id="1681977513903-17">
+        <dropForeignKeyConstraint baseTableName="LABELS" constraintName="LABELS_TASKS_ID_TASKS_ID_LABELS_ID"/>
+    </changeSet>
+    <changeSet author="pavelbulygin (generated)" id="1681977513903-18">
+        <dropColumn columnName="DESCRIPTION" tableName="LABELS"/>
+    </changeSet>
+    <changeSet author="pavelbulygin (generated)" id="1681977513903-19">
+        <dropColumn columnName="TASKS_ID" tableName="LABELS"/>
+    </changeSet>
+    <changeSet author="pavelbulygin (generated)" id="1681977513903-1">
+        <dropNotNullConstraint columnDataType="bigint" columnName="author_id" tableName="tasks"/>
+    </changeSet>
+    <changeSet author="pavelbulygin (generated)" id="1681977513903-2">
+        <dropNotNullConstraint columnDataType="varchar(255)" columnName="email" tableName="users"/>
+    </changeSet>
+    <changeSet author="pavelbulygin (generated)" id="1681977513903-3">
+        <dropNotNullConstraint columnDataType="varchar(255)" columnName="first_name" tableName="users"/>
+    </changeSet>
+    <changeSet author="pavelbulygin (generated)" id="1681977513903-4">
+        <dropNotNullConstraint columnDataType="varchar(255)" columnName="last_name" tableName="users"/>
+    </changeSet>
+    <changeSet author="pavelbulygin (generated)" id="1681977513903-5">
+        <dropNotNullConstraint columnDataType="varchar(255)" columnName="name" tableName="labels"/>
+    </changeSet>
+    <changeSet author="pavelbulygin (generated)" id="1681977513903-6">
+        <dropNotNullConstraint columnDataType="varchar(255)" columnName="name" tableName="task_statuses"/>
+    </changeSet>
+    <changeSet author="pavelbulygin (generated)" id="1681977513903-7">
+        <dropNotNullConstraint columnDataType="varchar(255)" columnName="name" tableName="tasks"/>
+    </changeSet>
+    <changeSet author="pavelbulygin (generated)" id="1681977513903-8">
+        <dropNotNullConstraint columnDataType="varchar(255)" columnName="password" tableName="users"/>
+    </changeSet>
+    <changeSet author="pavelbulygin (generated)" id="1681977513903-9">
+        <dropNotNullConstraint columnDataType="bigint" columnName="task_status_id" tableName="tasks"/>
+    </changeSet>
 </databaseChangeLog>
