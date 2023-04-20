@@ -3,6 +3,10 @@ server:
 
 base-url: /api
 
+springdoc:
+  swagger-ui:
+    path: /swagger-ui.html
+
 spring:
   application:
     name: taskManager
@@ -11,15 +15,11 @@ spring:
     enabled: true
     change-log: classpath:db/changelog/changelog-master.xml
 
-mvc:
-  hiddenmethod:
-    filter:
-      enabled: true
+  jpa:
+    generate-ddl: true
+    hibernate:
+      ddl-auto: validate
 
-jpa:
-  hibernate:
-    ddl-auto: create-drop
-
-spring-doc:
-  swagger-ui:
-    path: /swagger.html
+environments:
+  rollbar:
+    token: ${ROLLBAR_TOKEN}
