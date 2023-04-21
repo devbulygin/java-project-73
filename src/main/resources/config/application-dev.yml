@@ -12,6 +12,10 @@ spring:
     spring.jpa.database-platform: org.hibernate.dialect.H2Dialect
     show-sql: true
 
+    liquibase:
+      enabled: true
+      change-log: classpath:db/changelog/changelog-master.xml
+
   # Настраиваем консоль Н2
   # Это позволит нам открыть её в браузере по указанному пути
   h2:
