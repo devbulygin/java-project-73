@@ -1,5 +1,6 @@
 package hexlet.code.controller;
 
+
 import com.rollbar.notifier.Rollbar;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -14,10 +15,15 @@ public final class WelcomeController {
 
 
     @GetMapping(path = "/")
+        public RedirectView root() {
 
-
-    public RedirectView root() {
-        rollbar.debug("Here is some debug message");
         return new RedirectView("/api/users");
+    }
+
+
+    @GetMapping(path = "/rollbar")
+    public String rollbarSend() {
+        rollbar.debug("Here is some debug message");
+        return "Rollbar message send";
     }
 }

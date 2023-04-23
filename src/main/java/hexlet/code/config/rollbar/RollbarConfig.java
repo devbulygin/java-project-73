@@ -15,7 +15,8 @@ import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 @ComponentScan({
 
 // UPDATE TO YOUR PROJECT PACKAGE
-    "hexlet.code"
+    "hexlet.code",
+    "com.rollbar.spring"
 
 })
 public class RollbarConfig {
@@ -26,13 +27,9 @@ public class RollbarConfig {
     @Value("${rollbar_token:}")
     private String rollbarToken;
 
-    @Value("${spring.profiles.active:}")
-    private String activeProfile;
     @Bean
     public Rollbar rollbar() {
 
-        // Your ACCESS TOKEN is: 8f419a66ead6484d8e52e715a57a5511
-        // Make sure to keep this secure
         return new Rollbar(getRollbarConfigs(rollbarToken));
     }
 
@@ -41,7 +38,6 @@ public class RollbarConfig {
         // Reference ConfigBuilder.java for all the properties you can set for Rollbar
         return RollbarSpringConfigBuilder.withAccessToken(accessToken)
                 .environment("development")
-                .enabled(activeProfile == "prod")
                 .build();
     }
 }
