@@ -66,4 +66,8 @@ public class Task {
     @JoinColumn(name = "labels_id")
     private Set<Label> labels;
 
+    public Task(final Long id) {
+        this.id = id;
+    }
+
 }
