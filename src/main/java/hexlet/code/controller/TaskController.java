@@ -61,7 +61,7 @@ public class TaskController {
     @ApiResponses(@ApiResponse(responseCode = "200"))
     @GetMapping(ID)
     public Task getTaskByID(@PathVariable long id) {
-        return taskRepository.getById(id);
+        return taskRepository.findById(id).get();
     }
 
 

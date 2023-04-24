@@ -31,6 +31,7 @@ import static javax.persistence.TemporalType.TIMESTAMP;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
+
 public class Task {
 
     @Id
