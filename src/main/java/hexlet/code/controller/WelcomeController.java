@@ -5,7 +5,6 @@ import com.rollbar.notifier.Rollbar;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.servlet.view.RedirectView;
 
 @RestController
 public final class WelcomeController {
@@ -15,9 +14,9 @@ public final class WelcomeController {
 
 
     @GetMapping(path = "/")
-        public RedirectView root() {
+        public String message() {
 
-        return new RedirectView("/api/users");
+        return "welcome to Spring";
     }
 
 
