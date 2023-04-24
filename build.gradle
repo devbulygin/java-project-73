@@ -126,18 +126,10 @@ tasks.named('test') {
     useJUnitPlatform()
 }
 
-//buildscript {
-//    repositories {
-//        url 'https://plugins.gradle.org/m2/'
-//    }
-//    dependencies {
-//        // For JDK 11+
-//        classpath 'org.siouan:frontend-gradle-plugin-jdk11:6.0.0'
-//    }
-//}
-//
-apply plugin: 'org.siouan.frontend-jdk11'
 
+// Сборка фронтенда.
+// Выполняется только если ничего не изменилось.
+// *****************************************************************************
 frontend {
     nodeVersion = '16.13.1'
     installScript = 'install'
@@ -166,9 +158,10 @@ installFrontend {
 }
 
 processResources.dependsOn assembleFrontend
+// *****************************************************************************
 
-task stage(dependsOn: ['clean', 'installDist'])
+// Таска нужная heroku для деплоя
+task stage(dependsOn: [clean, installDist])
 installDist.mustRunAfter clean
-
 
 
