@@ -1,6 +1,5 @@
 package hexlet.code.config;
 
-
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.io.Resource;
@@ -12,7 +11,9 @@ import java.io.IOException;
 
 @Configuration
 public class WebConfiguration implements WebMvcConfigurer {
+
     private final String baseApiPath;
+
     public WebConfiguration(@Value("${base-url}") String baseApiPath) {
         this.baseApiPath = baseApiPath;
     }
@@ -42,6 +43,5 @@ public class WebConfiguration implements WebMvcConfigurer {
                         return location.exists() && location.isReadable() ? location : null;
                     }
                 });
-
     }
 }
